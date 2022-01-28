@@ -1,0 +1,17 @@
+:source-highlighter: rouge
+:pdf-theme: styles/theme.yml
+:pdf-fontsdir: styles/fonts;GEM_FONTS_DIR
+:table-stripes: even
+:listing-caption: Listing
+:icons: font
+
+= Stacks Ancillary Resources
+
+include::introduction.adoc[]
+
+include::deployment.adoc[]
+
+include::tfstate.adoc[]
+
+include::glossary.adoc[]
+

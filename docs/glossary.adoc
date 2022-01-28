@@ -1,0 +1,11 @@
+== Glossary
+
+.Glossary of terms used in the documentation
+[options=header,cols="1,2,2"]
+|===
+| Abbreviation | Expansion | Reference
+| DNS | Domain Name Service | 
+| SKU | Stock Keeping Unit | 
+| SP | Service Principal | https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals
+| TF | Terraform |
+|===

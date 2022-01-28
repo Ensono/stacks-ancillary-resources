@@ -1,0 +1,52 @@
+== Deployment
+
+Deployment of the templates is the same as any other deployment, apart from not setting the remote state backend.
+
+=== Variables
+
+The following table details the variables that can be specified when deploying the infrastructure.
+
+.Terraform Variables
+[options=header]
+|===
+| Name | Environment Var Name | Description | Default Value
+| `resource_group_name` | TF_VAR_resource_group_name | Name of the resource group to create for the resources | Stacks-Ancillary-Resources
+| `location` | TF_VAR_location | Location in Azure for all the resources | uksouth
+| `sa_name` | TF_VAR_sa_name | Name of the storage account to create for the Terraform state | amidostackstfstate
+| `sa_container` | TF_VAR_sa_container | Name of container to create to store the state files for all deployments | tfstate
+| `key_vault_name_nonprod` | TF_VAR_key_vault_name_nonprod | Name of the Key Vault to create for non-production details | stacks-nonprod-kv
+| `key_vault_name_prod` | TF_VAR_key_vault_name_prod | Name of the Key Vault to create for production details | stacks-prod-kv
+| `key_vault_sku` | TF_VAR_key_vault_sku | SKU for the Key Vault | standard
+| `la_name` | TF_VAR_la_name | Name of the log analytics workspace to create | stacks-la
+| `la_sku` | TF_VAR_la_sku | SKU to use for log analytics | PerGB2018
+| `la_retention` | TF_VAR_la_retention | Number of days to keep logs for | 30
+| `app_tenant_id` | TF_VAR_app_tenant_id | Tenant ID of the application that needs to access thje key vault |
+| `app_object_id` | TF_VAR_app_object_id | Object ID of the application accessing the vault | 
+| `app_application_id` | TF_VAR_app_application_id | Application ID (client id) of the application |
+| `dns_zones` | TF_VAR_dns_zones | List of public DNS zones to create |
+| `dns_private_zones` | TF_VAR_dns_zones | List of private DNS zones to create |
+|=== 
+
+NOTE: The variables that do not have a default value must be specified as a variable on the command line, as an environment variable or in a file. If not specified then Terraform will run in interactive mode to ask for the value.
+
+In order to perform a deployment into Azure, credentials must be supplied. The best way to do this is to configure a Service Princpal (SP) in Azure with a role of 'Contributor'. The details of this SPN are then set as environment variables that Terraform will use to authenticate with Azure.
+
+[source,powershell]
+----
+cd src/
+
+# Configure the environment variables for the initalisation
+$env:ARM_CLIENT_ID=
+$env:ARM_CLIENT_SECRET=
+$env:ARM_SUBSCRIPTION_ID=
+$env:ARM_TENANT_ID=
+
+terraform init
+
+# Plan the deployment
+terraform plan -input=false -out=tfplan
+
+# Deploy the resources
+terraform apply tfplan
+
+----
