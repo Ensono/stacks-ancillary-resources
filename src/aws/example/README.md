@@ -1,3 +1,12 @@
+##
+
+N.B: There are two tfvars file present, when creating infrastructure for particular environment, please disable the other tfvars file by renaming like below:
+
+```
+mv terraform.prod.tfvars terraform.prod.tfvars.disable
+mv terraform.prod.tfstate terraform.prod.tfstate.disable
+```
+
 ## Requirements
 
 | Name | Version |
