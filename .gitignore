@@ -3,6 +3,10 @@
 !tfstate.adoc
 local
 
+# Since this is deployed through dev machine in future the state will be imported into CI/CD
+!src/aws/example/terraform.prod.tfstate
+!src/aws/example/terraform.dev.tfstate
+
 # OS generated files #
 ######################
 .DS_Store
