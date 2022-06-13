@@ -6,3 +6,17 @@ local
 vendor
 envfile
 .infracost
+
+# Since this is deployed through dev machine in future the state will be imported into CI/CD
+!src/aws/example/terraform.prod.tfstate
+!src/aws/example/terraform.dev.tfstate
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
