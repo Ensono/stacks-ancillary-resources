@@ -9,6 +9,8 @@
 
 include::introduction.adoc[]
 
+include::pre-requisites.adoc[]
+
 include::deployment.adoc[]
 
 include::tfstate.adoc[]

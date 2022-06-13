@@ -1,0 +1,32 @@
+name: azure_terraform_state
+title: Azure Terraform State Storage
+maintainer: Amido
+copyright: Amido
+copyright_email: stacks@amdio.com
+license: Apache-2.0
+summary: A profile to test that the storage account for storing Terraform state is configured correctly
+version: 0.1.0
+inspec_version: ">= 2.2.7"
+depends:
+  - name: inspec-azure
+    url: https://github.com/inspec/inspec-azure/archive/main.tar.gz
+supports:
+  - platform: azure
+
+# Define the inputs for the controls
+inputs:
+  - name: resource_group_name
+    description: Name of the resource group with the storage account
+    value: RG_NAME
+  - name: region
+    description: Region that the resources are expected to be deployed into
+    value: REGION
+  - name: storage_account_name
+    description: Name of the storage account for storing Terraform state
+    value: SA_NAME
+  - name: container_name
+    description: Name of the bloc container that Terraform uses to store the state
+    value: tfstate
+  - name: retention_days
+    description: Number of days a container should be recoverable for after a deletion
+    value: 7

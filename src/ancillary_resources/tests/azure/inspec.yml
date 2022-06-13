@@ -1,0 +1,43 @@
+name: azure_ancillary_resources
+title: Azure Ancillary Resources
+maintainer: Amido
+copyright: Amido
+copyright_email: stacks@amido.com
+license: Apache-2.0
+summary: A profie to test the ancillary resources that are required as the basis of deploying Amido stacks
+version: 0.1.0
+inspec_version: ">= 2.2.7"
+depends:
+  - name: inspec-azure
+    path: ../../../../local/plugins/inspec-azure-1.118.5
+supports:
+  - platform: azure
+
+# Define the inputs for the controls
+inputs:
+  - name: resource_group_name
+    description: Name of the resource group with the storage account
+    value: RG_NAME
+  - name: region
+    description: Region that the resources are expected to be deployed into
+  - name: container_registry_name
+    description: Name of the container registry to test
+    value: ""
+  - name: dns_zones
+    description: Object containing the list of public and private DNS zones
+    value: ""
+  - name: la_workspace
+    description: Name of the Log Analytics workspace to check
+    value: ""
+  - name: la_sku
+    description: SKU that the workspace should have been configured with
+    value: pergb2018
+  - name: la_retention
+    description: Number of days that the logs should be retained for
+    value: 30
+  - name: key_vault
+    description: Specify the Key Vaults to check
+    value: ""
+  - name: azure_application_id
+    description: ID of the application that will have access to the key vault
+

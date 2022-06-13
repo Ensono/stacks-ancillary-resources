@@ -1,0 +1,57 @@
+tasks:
+
+  build:number:
+    context: powershell
+    description: Update the build number
+    command:
+      - Update-BuildNumber
+
+  lint:yaml:
+    context: powershell-python
+    description: Perform YAML linting
+    command:
+      - Invoke-YamlLint
+
+  lint:terraform:format:
+    context: powershell
+    description: Perform Terraform format check
+    command:
+      - Invoke-Terraform -Format -Path $env:TF_FILE_LOCATION
+
+  lint:terraform:validate:
+    context: powershell
+    description: Perform Terraform validation
+    command:
+      - Invoke-Terraform -Validate -Path $env:TF_FILE_LOCATION
+
+  infra:init:
+    context: powershell
+    description: Initialise Terraform for chosen templates
+    command:
+      - Invoke-Terraform -Init -Path $env:TF_FILE_LOCATION -Arguments $env:TF_BACKEND_INIT -debug
+      - Invoke-Terraform -Workspace -Arguments $env:ENV_NAME -Path $env:TF_FILE_LOCATION
+
+  infra:plan:
+    context: powershell
+    description: Plan Terraform
+    command:
+      - Invoke-Terraform -Plan -Path $env:TF_FILE_LOCATION -Arguments $env:TF_BACKEND_PLAN -Debug
+
+  infra:apply:
+    context: powershell
+    description: Apply Terraform
+    command:
+      - Invoke-Terraform -Apply -Path "${env:TF_FILE_LOCATION}/tfplan"
+
+  init:envs:
+    command:
+      - envfile -e home,path
+
+
+  setup:environment:
+    context: powershell
+    description: Ensure that the environment is configured correctly
+    command:
+      - Confirm-Environment -Path /app/build/config/stage_envvars.yml -cloud "azure"
+
+

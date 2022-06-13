@@ -1,0 +1,65 @@
+# State the env vars that need to exist in each stage
+# The default section will always be checked
+
+default:
+    variables:
+    credentials:
+        azure:
+            - name: ARM_CLIENT_ID
+            - name: ARM_CLIENT_SECRET
+            - name: ARM_SUBSCRIPTION_ID
+            - name: ARM_TENANT_ID
+
+stages:
+    - name: terraform_state
+      variables:
+        - name: TF_FILE_LOCATION
+        - name: TF_BACKEND_INIT
+        - name: TF_BACKEND_PLAN
+        - name: TF_VAR_name
+        - name: TF_VAR_location
+        - name: TF_VAR_resource_group_name
+        - name: TF_VAR_generate_rg_name
+          required: false
+        - name: TF_VAR_generate_sa_name
+          required: false
+
+    - name: ancillary_resources
+      variables:
+        - name: TF_FILE_LOCATION
+        - name: TF_BACKEND_INIT
+        - name: TF_BACKEND_PLAN
+        - name: TF_VAR_location
+        - name: TF_VAR_company_name
+        - name: TF_VAR_resource_group_name
+          required: false
+        - name: TF_VAR_dns_zones
+          required: false
+        - name: TF_VAR_deploy_log_analytics
+          required: false
+        - name: TF_VAR_log_analytics_sku
+          required: false
+        - name: TF_VAR_log_analytics_retention
+          required: false
+        - name: TF_VAR_key_vault_instances
+          required: false  
+        - name: TF_VAR_key_vault_sku
+          required: false
+        - name: TF_VAR_key_vault_secret_perms
+          required: false
+        - name: TF_VAR_key_vault_key_perms
+          required: false
+        - name: TF_VAR_key_vault_cert_perms
+          required: false
+        - name: TF_VAR_key_vault_storage_perms
+          required: false
+        - name: TF_VAR_container_registry
+          required: false
+        - name: TF_VAR_container_registry_admin
+          required: false
+        - name: TF_VAR_container_registry_sku
+          required: false
+        - name: TF_VAR_attributes
+          required: false
+        - name: TF_VAR_tags
+          required: false

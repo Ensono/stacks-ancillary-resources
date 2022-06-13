@@ -1,16 +1,17 @@
 == Introduction
 
-This repository contains the Terraform templates that are used to setup the initial configuration for running Amido Stacks. It is intended that the templates in this repository are run before any Amido Stacks component is deployed. The following lists the components that are deployed.
+This repository contains the Terraform templates and tests that are required to setup the initial infrastructure for running Amido stacks.
 
-- Resource Group - creates the resource group that all resources will be deployed into
-- Log Analytics Workspace - used for Azure monitoring
-- Azure Key Vault - for the storage of secrets that can be used by Azure DevOps etc
-- DNS Zones (public and private) - zones that will be updated as resources and applications are deployed
-- Azure Monitor
-- Storage Account - used to store the state for Terraform
+There are two templates:
 
-The following screenshot shows an example of the resources as they are seen in the Azure portal.
+1. Storage creation for the Terraform state
+2. Resources that allow Amido Stacks to work, such as DNS zones and Log Analytics
 
-.Resources in Azure
-image::images/stacks-ancillary-resources.png[]
+The reason that these two things have been changed is so that the state for the main resources can be saved in the state storage. Previous versions of the repository configured everything at one time so the state of the resources was not being saved anywhere.
+
+THe only exception now is that the storage account state is not being saved in the remote storage, but this would create a circular dependency whereby the state would be looked for in the storage which had not yet been created by the templates.
+
+
+
+
 
