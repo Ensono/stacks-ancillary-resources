@@ -1,7 +1,0 @@
----
-lockfile_version: 1
-depends:
-- name: inspec-azure
-  resolved_source:
-    path: C:/Users/RussellSeymour/workspaces/stacks/stacks-ancillary-resources/local/plugins/inspec-azure-1.118.5
-  version_constraints: []
