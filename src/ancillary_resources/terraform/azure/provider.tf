@@ -1,11 +1,11 @@
 terraform {
-    required_providers {
-        azurerm = {}
-    }
+  required_providers {
+    azurerm = {}
+  }
 
-    backend "azurerm" {}
+  backend "azurerm" {}
 }
 
 provider "azurerm" {
-    features {}
+  features {}
 }

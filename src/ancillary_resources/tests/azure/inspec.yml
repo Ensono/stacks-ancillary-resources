@@ -40,4 +40,3 @@ inputs:
     value: ""
   - name: azure_application_id
     description: ID of the application that will have access to the key vault
-

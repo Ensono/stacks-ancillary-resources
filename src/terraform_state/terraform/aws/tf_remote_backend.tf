@@ -4,7 +4,7 @@
 
 module "terraform_remote_backend" {
 
-  source = "git::https://github.com/amido/stacks-terraform//aws/modules/infrastructure_modules/terraform_remote_backend"
+  source = "git::https://github.com/amido/stacks-terraform//aws/modules/infrastructure_modules/terraform_remote_backend?ref=fix/iam-user-access"
 
   env      = var.env
   app_name = var.app_name
