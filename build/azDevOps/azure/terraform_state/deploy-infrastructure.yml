@@ -40,7 +40,7 @@ stages:
               TESTS_PATH: /app/src/terraform_state/tests/$(CLOUD_PLATFORM)
 
       - job: Ancillary Resources
-        condition: and(eq(variables.deploy_ancillary_resources, 'true'), neq(variables.CLOUD_PLATFORM, 'aws'))
+        condition: and(eq(variables.deploy_ancillary_resources, 'true'), ne(variables.CLOUD_PLATFORM, 'aws'))
         pool:
           vmImage: $(pool_vm_image)
 
