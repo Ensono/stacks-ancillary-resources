@@ -1,5 +1,21 @@
 name: "$(Build.SourceBranchName)-init"
 
+# define parameters that can be selected at runtime to define
+# what jobs should be performed
+parameters:
+  - name: deploy_tf_state
+    displayName: Deploy Terraform State storage
+    default: false
+    values:
+      - true
+      - false
+  - name: deploy_ancillary_resources
+    displayName: Deploy Amido Stacks ancillary resources
+    default: false
+    values:
+      - true
+      - false
+
 # Include the variables for this pipeline file
 variables:
   - template: azdo-pipeline-vars.yml
@@ -11,7 +27,7 @@ stages:
     jobs:
       - job: terraform_state
         displayName: Terraform State
-        condition: eq(variables.deploy_tf_state, 'true')
+        condition: eq(parameters.deploy_tf_state, true)
         pool:
           vmImage: $(pool_vm_image)
 
@@ -42,7 +58,7 @@ stages:
 
       - job: ancillary_resources
         displayName: Ancillary Resources
-        condition: and(eq(variables.deploy_ancillary_resources, 'true'), ne(variables.CLOUD_PLATFORM, 'aws'))
+        condition: and(eq(parameters.deploy_ancillary_resources, true), ne(variables.CLOUD_PLATFORM, 'aws'))
         pool:
           vmImage: $(pool_vm_image)
 
