@@ -79,7 +79,7 @@ stages:
               TF_FILE_LOCATION: /app/src/ancillary_resources/terraform/$(CLOUD_PLATFORM)
               TF_BACKEND: none
 
-          - template: templates/infra-tests.yml
+          - template: ../templates/infra-tests.yml
             parameters:
               CHEF_LICENSE: $(CHEF_LICENSE)
               TESTS_PATH: /app/src/ancillary_resources/tests/$(CLOUD_PLATFORM)
