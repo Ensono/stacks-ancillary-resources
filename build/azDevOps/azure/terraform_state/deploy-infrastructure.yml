@@ -7,16 +7,10 @@ parameters:
     displayName: Deploy Terraform State storage
     type: boolean
     default: false
-    values:
-      - true
-      - false
   - name: deploy_ancillary_resources
     displayName: Deploy Amido Stacks ancillary resources
     type: boolean
     default: false
-    values:
-      - true
-      - false
 
 # Include the variables for this pipeline file
 variables:
@@ -34,6 +28,11 @@ stages:
           vmImage: $(pool_vm_image)
 
         steps:
+          - template: ../templates/setup.yml
+            parameters:
+              TaskctlVersion: ${{ variables.TaskctlVersion }}
+              StacksEnvfileVersion: ${{ variables.StacksEnvfileVersion }}
+
           - task: Bash@3
             displayName: "TaskCTL: Infrastructure"
             inputs:
@@ -65,6 +64,11 @@ stages:
           vmImage: $(pool_vm_image)
 
         steps:
+          - template: ../templates/setup.yml
+            parameters:
+              TaskctlVersion: ${{ variables.TaskctlVersion }}
+              StacksEnvfileVersion: ${{ variables.StacksEnvfileVersion }}
+
           - task: Bash@3
             displayName: "TaskCTL: Infrastructure"
             inputs:
