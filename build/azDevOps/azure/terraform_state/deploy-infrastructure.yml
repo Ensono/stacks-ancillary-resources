@@ -52,7 +52,7 @@ stages:
               TF_VAR_region: $(location)
               TF_VAR_application_name: $(application_name)
 
-          - template: templates/infra-tests.yml
+          - template: ../templates/infra-tests.yml
             parameters:
               CHEF_LICENSE: $(CHEF_LICENSE)
               TESTS_PATH: /app/src/terraform_state/tests/$(CLOUD_PLATFORM)
