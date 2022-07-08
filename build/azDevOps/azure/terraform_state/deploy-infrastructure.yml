@@ -9,7 +9,8 @@ stages:
   - stage: Deployment
 
     jobs:
-      - job: Terraform State
+      - job: terraform_state
+        displayName: Terraform State
         condition: eq(variables.deploy_tf_state, 'true')
         pool:
           vmImage: $(pool_vm_image)
@@ -39,7 +40,8 @@ stages:
               CHEF_LICENSE: $(CHEF_LICENSE)
               TESTS_PATH: /app/src/terraform_state/tests/$(CLOUD_PLATFORM)
 
-      - job: Ancillary Resources
+      - job: ancillary_resources
+        displayName: Ancillary Resources
         condition: and(eq(variables.deploy_ancillary_resources, 'true'), ne(variables.CLOUD_PLATFORM, 'aws'))
         pool:
           vmImage: $(pool_vm_image)
