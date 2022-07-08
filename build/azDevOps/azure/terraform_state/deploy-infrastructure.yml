@@ -5,12 +5,14 @@ name: "$(Build.SourceBranchName)-init"
 parameters:
   - name: deploy_tf_state
     displayName: Deploy Terraform State storage
+    type: boolean
     default: false
     values:
       - true
       - false
   - name: deploy_ancillary_resources
     displayName: Deploy Amido Stacks ancillary resources
+    type: boolean
     default: false
     values:
       - true
@@ -27,7 +29,7 @@ stages:
     jobs:
       - job: terraform_state
         displayName: Terraform State
-        condition: eq(parameters.deploy_tf_state, true)
+        condition: eq('${{ parameters.deploy_tf_state }}', 'true')
         pool:
           vmImage: $(pool_vm_image)
 
@@ -58,7 +60,7 @@ stages:
 
       - job: ancillary_resources
         displayName: Ancillary Resources
-        condition: and(eq(parameters.deploy_ancillary_resources, true), ne(variables.CLOUD_PLATFORM, 'aws'))
+        condition: and(eq('${{ parameters.deploy_ancillary_resources }}', 'true'), ne(variables.CLOUD_PLATFORM, 'aws'))
         pool:
           vmImage: $(pool_vm_image)
 
