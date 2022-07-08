@@ -47,11 +47,32 @@ tasks:
     command:
       - envfile -e home,path
 
+  setup:dev:
+    context: powershell
+    description: Create a shell script to configure the environment variables
+    command:
+      - New-EnvConfig -Path /app/build/config/stage_envvars.yml -ScriptPath /app/local
 
   setup:environment:
     context: powershell
     description: Ensure that the environment is configured correctly
     command:
-      - Confirm-Environment -Path /app/build/config/stage_envvars.yml -cloud "azure"
+      - Confirm-Environment -Path /app/build/config/stage_envvars.yml
 
+  tests:infra:init:
+    context: powershell
+    description: Initialise the Inspec test profile
+    command:
+      - Invoke-Inspec -init
 
+  tests:infra:vendor:
+    context: powershell
+    description: Ensure all necessary plugins and providers are installed
+    command:
+      - Invoke-Inspec -vendor -args "--overwrite"
+
+  tests:infra:run:
+    context: powershell
+    description: Execute infrastructure tests against deployed Cloud resources
+    command:
+      - Invoke-Inspec -execute

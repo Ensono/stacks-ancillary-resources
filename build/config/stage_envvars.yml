@@ -2,64 +2,146 @@
 # The default section will always be checked
 
 default:
-    variables:
-    credentials:
-        azure:
-            - name: ARM_CLIENT_ID
-            - name: ARM_CLIENT_SECRET
-            - name: ARM_SUBSCRIPTION_ID
-            - name: ARM_TENANT_ID
+  variables:
+    - name: CLOUD_PLATFORM
+      description: Cloud that is being targetted, e.g. aws or azure
+    - name: TESTS_PATH
+      description: Path to the tests folder, without the cloud being appended
+    - name: INSPEC_ARGS
+      required: false
+    - name: CHEF_LICENSE
+      description: Inspec license needs to be accepted, set to `accept-silent`
+  credentials:
+    azure:
+      - name: ARM_CLIENT_ID
+      - name: ARM_CLIENT_SECRET
+      - name: ARM_SUBSCRIPTION_ID
+      - name: ARM_TENANT_ID
+    aws:
+      - name: AWS_ACCESS_KEY_ID
+      - name: AWS_SECRET_ACCESS_KEY
+      - name: AWS_REGION
 
 stages:
-    - name: terraform_state
-      variables:
-        - name: TF_FILE_LOCATION
-        - name: TF_BACKEND_INIT
-        - name: TF_BACKEND_PLAN
-        - name: TF_VAR_name
-        - name: TF_VAR_location
-        - name: TF_VAR_resource_group_name
-        - name: TF_VAR_generate_rg_name
-          required: false
-        - name: TF_VAR_generate_sa_name
-          required: false
+  - name: terraform_state
+    variables:
+      - name: TF_FILE_LOCATION
+        description: Path to the Terraform template files
+      - name: TF_BACKEND_INIT
+        description: Arguments that should be passed to Terraform during the init process
+      - name: TF_BACKEND_PLAN
+        description: Arguments that should be passed to Terraform during the plan process
+        required: false
+      - name: TF_VAR_name
+        cloud: azure
+        description: Name of company or project to use in the name
+      - name: TF_VAR_location
+        cloud: azure
+        description: Azure location that the resources should be deployed to
+      - name: TF_VAR_resource_group_name
+        cloud: azure
+        description: Name of group into which the resources will be deployed
+      - name: TF_VAR_generate_rg_name
+        required: false
+        cloud: azure
+      - name: TF_VAR_generate_sa_name
+        required: false
+        cloud: azure
+      - name: TF_VAR_acl
+        cloud: aws
+        description: The canned ACL to apply
+      - name: TF_VAR_app_name
+        cloud: aws
+        description: Name of the application
+      - name: TF_VAR_application_name
+        cloud: aws
+        description: Name of the application used in tagging
+      - name: TF_VAR_attribute_name
+        cloud: aws
+        required: false
+      - name: TF_VAR_attribute_type
+        cloud: aws
+        required: false
+      - name: TF_VAR_block_public_acls
+        cloud: aws
+        description: Whether Amazon S3 should ignore public ACLs for this bucket
+      - name: TF_VAR_block_public_policy
+        cloud: aws
+        description: Whether Amazon S3 should block public bucket policies for this bucket
+      - name: TF_VAR_env
+        cloud: aws
+        description: Name of the environment
+      - name: TF_VAR_force_destroy
+        cloud: aws
+        description: Boolean that indicates all objects should be deleted before the bucket is destroyed
+      - name: TF_VAR_hash_key
+        cloud: aws
+        description: The attribute to use as the hash (partition) key
+      - name: TF_VAR_ignore_public_acls
+        cloud: aws
+        description: Whether Amazon S3 should ignore public ACLs for this bucket
+      - name: TF_VAR_read_capacity
+        cloud: aws
+        description: The number of read units for this table
+      - name: TF_VAR_region
+        cloud: aws
+        description: AWS Region
+      - name: TF_VAR_restrict_public_buckets
+        cloud: aws
+        description: Whether Amazon S3 should restrict public bucket policies for this bucket
+      - name: TF_VAR_sse_enabled
+        cloud: aws
+        description: State if encryption at rest using an AWS managed Customer Master Key should be enabled
+      - name: TF_VAR_versioning_enabled
+        cloud: aws
+        description: Enable versioning. Once you version-enable a bucket, it can never return to an unversioned state
+      - name: TF_VAR_write_capacity
+        cloud: aws
+        description: The number of write units for this table
+      - name: TESTS_PATH
+        description: Path to the Inspec test files. This should be set in relation to the /app path for the container context.
+      - name: INSPEC_ARGS
+        description: Arguments to pass to Inspec
+        required: false
+      - name: INSPEC_OUTPUT_PATH
+        description: Directory into which the tests results should be saved to
 
-    - name: ancillary_resources
-      variables:
-        - name: TF_FILE_LOCATION
-        - name: TF_BACKEND_INIT
-        - name: TF_BACKEND_PLAN
-        - name: TF_VAR_location
-        - name: TF_VAR_company_name
-        - name: TF_VAR_resource_group_name
-          required: false
-        - name: TF_VAR_dns_zones
-          required: false
-        - name: TF_VAR_deploy_log_analytics
-          required: false
-        - name: TF_VAR_log_analytics_sku
-          required: false
-        - name: TF_VAR_log_analytics_retention
-          required: false
-        - name: TF_VAR_key_vault_instances
-          required: false  
-        - name: TF_VAR_key_vault_sku
-          required: false
-        - name: TF_VAR_key_vault_secret_perms
-          required: false
-        - name: TF_VAR_key_vault_key_perms
-          required: false
-        - name: TF_VAR_key_vault_cert_perms
-          required: false
-        - name: TF_VAR_key_vault_storage_perms
-          required: false
-        - name: TF_VAR_container_registry
-          required: false
-        - name: TF_VAR_container_registry_admin
-          required: false
-        - name: TF_VAR_container_registry_sku
-          required: false
-        - name: TF_VAR_attributes
-          required: false
-        - name: TF_VAR_tags
-          required: false
+  - name: ancillary_resources
+    variables:
+      - name: TF_FILE_LOCATION
+      - name: TF_BACKEND_INIT
+      - name: TF_BACKEND_PLAN
+      - name: TF_VAR_location
+      - name: TF_VAR_company_name
+      - name: TF_VAR_resource_group_name
+        required: false
+      - name: TF_VAR_dns_zones
+        required: false
+      - name: TF_VAR_deploy_log_analytics
+        required: false
+      - name: TF_VAR_log_analytics_sku
+        required: false
+      - name: TF_VAR_log_analytics_retention
+        required: false
+      - name: TF_VAR_key_vault_instances
+        required: false
+      - name: TF_VAR_key_vault_sku
+        required: false
+      - name: TF_VAR_key_vault_secret_perms
+        required: false
+      - name: TF_VAR_key_vault_key_perms
+        required: false
+      - name: TF_VAR_key_vault_cert_perms
+        required: false
+      - name: TF_VAR_key_vault_storage_perms
+        required: false
+      - name: TF_VAR_container_registry
+        required: false
+      - name: TF_VAR_container_registry_admin
+        required: false
+      - name: TF_VAR_container_registry_sku
+        required: false
+      - name: TF_VAR_attributes
+        required: false
+      - name: TF_VAR_tags
+        required: false

@@ -1,0 +1,47 @@
+contexts:
+
+  powershell:
+    executable:
+      bin: docker
+      args:
+        - run
+        - --env-file
+        - envfile
+        - --rm
+        - -v
+        - ${PWD}:/app
+        - -v
+        - /var/run/docker.sock:/var/run/docker.sock
+        - -e
+        - PSModulePath=/modules
+        - -w
+        - /app
+        - amidostacks/runner-pwsh:0.3.142-unstable
+        - pwsh
+        - -NoProfile
+        - -Command
+    quote: "'"
+    before: envfile -e home,path
+
+  powershell-python:
+    executable:
+      bin: docker
+      args:
+        - run
+        - --rm
+        - -v
+        - ${PWD}:/app
+        - -v
+        - /var/run/docker.sock:/var/run/docker.sock
+        - -e
+        - PSModulePath=/modules
+        - -w
+        - /app
+        - --env-file
+        - envfile
+        - amidostacks/runner-pwsh-python:0.3.142-unstable
+        - pwsh
+        - -NoProfile
+        - -Command
+    quote: "'"
+    before: envfile -e path,home

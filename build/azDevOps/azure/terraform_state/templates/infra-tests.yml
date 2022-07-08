@@ -1,0 +1,13 @@
+parameters:
+    TESTS_PATH: 
+    INSPEC_ARGS:
+    INSPEC_OUTPUT_PATH: /app/output/tests
+    CHEF_LICENSE: 
+
+steps:
+
+    - task: Bash@3
+      displayName: "TackCTL: Tests"
+      inputs:
+        targetType: inline
+        script: taskctl tests

@@ -1,0 +1,47 @@
+# This file contains the variables that are required for the pipeline in Azure DevOps
+# Ths pipeline in this folder is for deploying the resources to Azure in AzDo
+
+variables:
+
+  # Cloud
+  - name: CLOUD_PLATFORM
+    value: azure
+
+  # Licensing
+  - name: CHEF_LICENSE
+    value: accept-silent
+
+  # Terraform State resources
+  # ------- General
+  - name: location
+    value: westeurope
+  - name: env
+    value: base
+
+  # ------- Azure
+  - name: resource_group_name
+    value: ""
+  - name: storage_account_name
+    value: ""
+  - name: container_name
+    value: tfstate
+
+  # ------- AWS
+  - name: application_name
+    value: ""
+  - name: app_name
+    value: $(application_name)
+
+  # Versioning
+  - name: version_major
+    value: 0
+  - name: version_minor
+    value: 1
+  - name: version_revision
+    value: $[counter(join(variables['version_major'], join('-', variables['version_minor'])), 0)]
+  - name: version_number
+    value: $(version_major).$(version_minor).$(version_revision)
+
+  # Agent configuration
+  - name: pool_vm_image
+    value: ubuntu-22.04

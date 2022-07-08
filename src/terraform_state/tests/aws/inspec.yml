@@ -8,7 +8,7 @@ summary: A profile to test that the storage account for storing Terraform state 
 version: 0.1.0
 depends:
   - name: inspec-aws
-    url: https://github.com/inspec/inspec-aws/archive/v1.83.29.tar.gz
+    url: https://github.com/inspec/inspec-aws/archive/v1.83.35.tar.gz
 supports:
   - platform: aws
 
