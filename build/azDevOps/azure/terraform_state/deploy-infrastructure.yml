@@ -40,6 +40,7 @@ stages:
               targetType: inline
               script: taskctl infrastructure
             env:
+              STAGE: terraform_state
               DOCKER_IMAGE_TAG: $(version_number)
               TF_FILE_LOCATION: /app/src/terraform_state/terraform/$(CLOUD_PLATFORM)
               TF_BACKEND: none
@@ -81,6 +82,8 @@ stages:
               DOCKER_IMAGE_TAG: $(version_number)
               TF_FILE_LOCATION: /app/src/ancillary_resources/terraform/$(CLOUD_PLATFORM)
               TF_BACKEND: none
+
+              STAGE: anciallry_resources
 
           - template: ../templates/infra-tests.yml
             parameters:
