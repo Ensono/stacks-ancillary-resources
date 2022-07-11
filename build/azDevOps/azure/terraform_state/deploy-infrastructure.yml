@@ -15,6 +15,7 @@ parameters:
 # Include the variables for this pipeline file
 variables:
   - template: azdo-pipeline-vars.yml
+  - group: azure-sp-creds
 
 stages:
 
@@ -51,6 +52,8 @@ stages:
               # AWS Terraform environment variables
               TF_VAR_region: $(location)
               TF_VAR_application_name: $(application_name)
+
+              TESTS_PATH: ""
 
           - template: ../templates/infra-tests.yml
             parameters:

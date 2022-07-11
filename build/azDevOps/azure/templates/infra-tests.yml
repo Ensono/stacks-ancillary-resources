@@ -11,3 +11,11 @@ steps:
       inputs:
         targetType: inline
         script: taskctl tests
+      env:
+
+        # Ensure that the env vars are set for access
+        # The following are the env vars that Inspec requires for authentication with Azure
+        AZURE_CLIENT_ID: $ARM_CLIENT_ID
+        AZURE_CLIENT_SECRET: $ARM_CLIENT_SECRET
+        AZURE_SUBSCRIPTION_ID: $ARM_SUBSCRIPTION_ID
+        AZURE_TENANT_ID: $ARM_TENANT_ID

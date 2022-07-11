@@ -4,9 +4,9 @@
 default:
   variables:
     - name: CLOUD_PLATFORM
-      description: Cloud that is being targetted, e.g. aws or azure
+      description: Cloud that is being targeted, e.g. aws or azure
     - name: TESTS_PATH
-      description: Path to the tests folder, without the cloud being appended
+      description: Path to the tests folder
     - name: INSPEC_ARGS
       required: false
     - name: CHEF_LICENSE
