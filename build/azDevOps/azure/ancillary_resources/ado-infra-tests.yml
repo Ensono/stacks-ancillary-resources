@@ -3,7 +3,7 @@ name: infrastructure-tests
 # Include necessary variables for this pipeline file
 variables:
   - template: azdo-pipeline-vars.yml
-  - group: azure-sp-creds
+  - group: ensono-sp-creds
 
 stages:
 
