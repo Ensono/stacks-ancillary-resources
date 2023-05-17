@@ -7,7 +7,7 @@ variables:
 
 stages:
 
-  - stage: Infrastructure Tests
+  - stage: infrastructure_tests
 
     jobs:
 
