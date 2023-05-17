@@ -5,6 +5,7 @@ tasks:
     description: Update the build number
     command:
       - Update-BuildNumber
+    exportAs: BUILDNUMBER
 
   lint:yaml:
     context: powershell-python
@@ -76,3 +77,9 @@ tasks:
     description: Execute infrastructure tests against deployed Cloud resources
     command:
       - Invoke-Inspec -execute
+
+  _docs:
+    context: docsenv
+    description: Generate the documentation
+    command:
+      - Build-Documentation -BasePath /app -config /app/manual.json -pdf

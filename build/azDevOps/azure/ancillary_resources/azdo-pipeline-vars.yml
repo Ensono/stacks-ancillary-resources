@@ -3,6 +3,8 @@
 
 variables:
 
+  - template: ../agent-config-vars.yml
+
   # Cloud
   - name: CLOUD_PLATFORM
     value: azure
@@ -20,9 +22,9 @@ variables:
 
   # ------- Azure
   - name: resource_group_name
-    value: ""
+    value: stacks-terraform-state
   - name: storage_account_name
-    value: ""
+    value: stacksstatehjfis
   - name: container_name
     value: tfstate
 
@@ -31,21 +33,3 @@ variables:
     value: ""
   - name: app_name
     value: $(application_name)
-
-  # Versioning
-  - name: version_major
-    value: 0
-  - name: version_minor
-    value: 1
-  - name: version_revision
-    value: $[counter(join(variables['version_major'], join('-', variables['version_minor'])), 0)]
-  - name: version_number
-    value: $(version_major).$(version_minor).$(version_revision)
-
-  # Agent configuration
-  - name: pool_vm_image
-    value: ubuntu-22.04
-  - name: TaskctlVersion
-    value: 1.4.2
-  - name: StacksEnvfileVersion
-    value: 0.0.16

@@ -4,7 +4,14 @@
 [options=header,cols="1,2,2"]
 |===
 | Abbreviation | Expansion | Reference
+| AIR | Amido Independent Runner | https://github.com/amido/independent-runner
+| AWS | Amazon Web Services |
+| ADO, AZDO | Azure DevOps |
+| GHA | GitHub Actions |
+| CLI | Command Line Interface |
 | DNS | Domain Name Service | 
+| IAM | Identity and Access Management | https://aws.amazon.com/iam/
+| SDLC | Software Development Lifecycle | 
 | SKU | Stock Keeping Unit | 
 | SP | Service Principal | https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals
 | TF | Terraform |

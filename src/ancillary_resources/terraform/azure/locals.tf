@@ -18,11 +18,6 @@ locals {
     southeastasia = "asse"
   }
 
-  # Create an array to iterate around for the key vault instances
-  kv_instances = flatten([
-    for key, value in var.key_vault_instances : value if value != ""
-  ])
-
   # Setup the default internal domains if they havce not been set
   # These will based on the public zones with the internal_domain_suffix added to it
   dns_zones = {
@@ -30,5 +25,10 @@ locals {
     private = length(var.dns_zones["private"]) > 0 ? var.dns_zones["private"] : flatten([
       for zone in var.dns_zones["public"] : format("%s.%s", zone, var.internal_domain_suffix)
     ])
+  }
+
+  # Create the tags that need to be added to each of the resources
+  tags = {
+    "created_by" = data.azurerm_client_config.service_principal.client_id
   }
 }

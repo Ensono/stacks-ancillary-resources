@@ -1,17 +1,47 @@
 == Introduction
 
-This repository contains the Terraform templates and tests that are required to setup the initial infrastructure for running Amido stacks.
+Amido Stacks consists of lots of different blocks that make up the whole Stacks system. The Stacks-Ancillary-Resources repository is one of the foundation components for setting up the initial infrastructure. It is configured to work with Microsoft Azure, Amazon Web Services (AWS) and soon Google Cloud Platform (GCP).
 
-There are two templates:
+There are two sets of templates for each cloud in the repository, as outlined below. The sections also contain Inspec tests to ensure that the resources are setup correctly. The idea here is that they can be run as part of the infrastructure deployment as well as independently on a schedule. By running the tests on a schedule it is possible to provide an early warning system for items that have changed outside of the desired configuration.
 
-1. Storage creation for the Terraform state
-2. Resources that allow Amido Stacks to work, such as DNS zones and Log Analytics
+Terraform is not solely used to keep the desired state correct as it _can_ be destructive on resources that have been changed. By using Inspec a warning can be raised and then a decision made as to how to remediate the issue.
 
-The reason that these two things have been changed is so that the state for the main resources can be saved in the state storage. Previous versions of the repository configured everything at one time so the state of the resources was not being saved anywhere.
+=== Terraform Remote State
 
-THe only exception now is that the storage account state is not being saved in the remote storage, but this would create a circular dependency whereby the state would be looked for in the storage which had not yet been created by the templates.
+Amido Stacks uses Terraform templates to build out the infrastructure, however so that it can be maintained its state needs to be kept in a remote location. The repository contains the templates to set up the necessary storage in Azure or AWS for this purpose. This is the most basic resources required:
 
+.Cloud resources for Terraform state
+[options="header",cols="1a,1a,1a"]
+|===
+| Azure | AWS | GCP
+| - Storage Account 
+| - S3 Bucket 
+  - DynamoDB
+  - KMS | Coming soon
+|===
 
+NOTE: AWS requires additional resources to provide locking capabilities that Terraform requires.
+
+Due to the templates setting up the remote state location the state for the templates themselves are not saved anywhere.
+
+=== Ancillary Resources
+
+Other components for Amido Stacks include core infrastructure, such as Kubernetes, for different environments, e.g. DEV, PreProd and Prod for example.
+
+However there are some components that need to be deployed in a more global capacity, such things are DNS Zones, Container Registries and Key Vaults.
+
+Again different resources are deployed for the different cloud platforms.
+
+.Cloud resources for ancillary resources
+[options="header",cols="1a,1a,1a"]
+|===
+| Azure | AWS | GCP
+| - Container Registry 
+  - DNS Zones (_optional_)
+  - Key Vault
+  - Log Analytics
+  | None | Coming soon
+|===
 
 
 

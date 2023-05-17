@@ -1,0 +1,5 @@
+=== Examples
+
+This section show some examples of how to use the independent runner locally to standup the necessary infrastructure.
+
+include::examples/example-tf-state-azure.adoc[]

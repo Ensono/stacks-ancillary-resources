@@ -7,6 +7,8 @@ vendor
 envfile
 .infracost
 inspec.lock
+output
+outputs
 
 # Since this is deployed through dev machine in future the state will be imported into CI/CD
 !src/aws/example/terraform.prod.tfstate
@@ -21,3 +23,5 @@ inspec.lock
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+tests/

@@ -1,3 +1,5 @@
+:icons: font
+
 == Pre-requisites
 
 Amido Stacks has been designed to be as contained as possible. In order to achieve this it relies heavily on Docker containers and environment variables. This means that there are a few of pre-requisites that need to be installed to run the pipeline on a local workstation.
@@ -5,6 +7,11 @@ Amido Stacks has been designed to be as contained as possible. In order to achie
 1. Docker - this is used to run the containers that the pipeline requires
 2. https://github.com/amido/stacks-envfile[EnvFile] - this is a utility written by Amido that properly creates an environment file that is compatible with Docker to ensure that the container has the correct environment variables.
 3. https://github.com/taskctl/taskctl[Tascktl] - this application is used as the independent runner which means all CI/CD platforms and local runs are executed in exactly the same way.
+
+If the credentials, for Terraform and Inspec to access the Cloud provider, are being created on the command line then at least one of the following will be required in addition to the tools stated above.
+
+- Azure CLI - https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
+- AWS CLI - https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 
 Please ensure that the `envfile` and `taskctl` tools are placed in a location that it in your PATH environment variable.
 
@@ -14,23 +21,40 @@ NOTE: For the CI/CD platforms the pipeline will install the `envfile` applicatio
 
 In order for Terraform to be able to deploy resources into the supported cloud platforms a user needs to be created with the appropriate permissions.
 
-==== Azure
+==== icon:windows[]  Azure
 
 When deploying into Azure, Terraform uses a Service Principal (SP). This needs to be created with at least "Contributor" access and with some extra role assignments to allow the SP to add management locks to resources so they cannot be deleted inadvertently.
 
 .Create the service principal
-[source=bash]
+[options="header",cols="1a,1a"]
+|====
+| CLI | PowerShell Module
+
+| [source,bash]
 ----
 az ad sp create-for-rbac -n "StacksDeploy" --role Contributor
 ----
+| [source,powershell]
+----
+New-AzADServicePrincipal -Name "StacksDeploy" -Role Contributor -ApplicationId (New-Guid).Guid
+----
+
+IMPORTANT: If the `ApplicationId` is not supplied then Azure will auto generate it, but the secret will not be displayed in the output, additional steps (as shown below) will need to performed to get the secret for the new service principal.
+
+[source,powershell]
+----
+$BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($sp.Secret)
+$UnsecureSecret = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
+----
+|====
 
 NOTE: If the app has been given the "Owner" role then the addition role assignment does not need to be performed.
 
 NOTE: The additional role only needs to be deployed and assigned to the SP if the option to deploy the management locks on the resource has been enabled. This is the case by default.
 
-To apply the additional permissions to the SP the role definition has to be created. A role definition file with the necessary permissions exists in this repo at `build/azure/lock_role.json`. This fille needs to be updated to include the subscription to which it will apply. This needs to be put into the `AssignableScopes` array, for example:
+To apply the additional permissions to the SP the role definition has to be created. A role definition file with the necessary permissions exists in this repo at `build/azure/lock_role.json`. This file needs to be updated to include the subscription to which it will apply. This needs to be put into the `AssignableScopes` array, for example:
 
-[source=json]
+[source,json,linenums]
 ----
     "AssignableScopes": [
         "/subscriptions/035164db-5c88-4946-b42f-ad02e825448e"
@@ -40,12 +64,47 @@ To apply the additional permissions to the SP the role definition has to be crea
 Once the file has been updated, the role definition can be created on the specified subscription in Azure and then it can be assigned to the SP.
 
 .Create and assign new role in Azure
-[source=bash]
+[options="header",cols="1a,1a"]
+|====
+| CLI | PowerShell Module
+
+| [source,bash]
 ----
 az role definition create --role-definition build/config/azure/lock_role.json
+
 az role assignment create --assignee 4c0c1042-4337-49be-885e-849ef5c11736 --role "Manage Locks" --subscription 035164db-5c88-4946-b42f-ad02e825448e
 ----
+| [source,powershell]
+----
+New-AzRoleDefinition -InputFile .\build\config\azure\lock_role.json
 
+New-AzRoleAssignment -ObjectID  4c0c1042-4337-49be-885e-849ef5c11736 -RoleDefinitionName "Manage Locks" -Scope "/subscriptions/035164db-5c88-4946-b42f-ad02e825448e"
+----
+|====
 
+==== icon:amazon[] AWS
 
+Access to AWS to perform the deployment is done using access keys from your Identity Access Management (IAM) account.
 
+Creating the necessary keys can be done in the AWS console or from the command line. The following shows how this can be completed from the command line.
+
+.Create AWS Access Keys
+[source,bash]
+----
+aws iam create-access-key --user-name russellseymour
+----
+
+This will create an access key in the user account with information similar to the following:
+
+[source,json]
+----
+{
+    "AccessKey": {
+        "UserName": "russellseymour",
+        "AccessKeyId": "AKIAIOSFODNN7EXAMPLE",
+        "Status": "Active",
+        "SecretAccessKey": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+        "CreateDate": "2022-06-30T12:53:16Z"
+    }
+}
+----

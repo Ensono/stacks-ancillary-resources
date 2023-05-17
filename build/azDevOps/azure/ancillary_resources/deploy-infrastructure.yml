@@ -1,0 +1,41 @@
+name: "$(Build.SourceBranchName)-init"
+
+# Include the variables for this pipeline file
+variables:
+  - template: azdo-pipeline-vars.yml
+  - group: azure-sp-creds
+
+stages:
+
+  - stage: Deployment
+
+    jobs:
+
+      - job: ancillary_resources
+        displayName: Ancillary Resources
+        condition: ne(variables.CLOUD_PLATFORM, 'aws')
+        pool:
+          vmImage: $(pool_vm_image)
+
+        steps:
+          - template: ../templates/setup.yml
+            parameters:
+              TaskctlVersion: ${{ variables.TaskctlVersion }}
+              StacksEnvfileVersion: ${{ variables.StacksEnvfileVersion }}
+
+          - task: Bash@3
+            displayName: "TaskCTL: Infrastructure"
+            inputs:
+              targetType: inline
+              script: taskctl infrastructure
+            env:
+              DOCKER_IMAGE_TAG: $(version_number)
+              TF_FILE_LOCATION: /app/src/ancillary_resources/terraform/$(CLOUD_PLATFORM)
+              TF_BACKEND: none
+
+              STAGE: ancillary_resources
+
+          - template: ../templates/infra-tests.yml
+            parameters:
+              CHEF_LICENSE: $(CHEF_LICENSE)
+              TESTS_PATH: /app/src/ancillary_resources/tests/$(CLOUD_PLATFORM)

@@ -18,9 +18,9 @@ output "key_vault" {
       url  = azurerm_key_vault.kv[var.key_vault_instances.prod].vault_uri
     } : null
     nonprod = var.key_vault_instances.nonprod != "" ? {
-      id   = azurerm_key_vault.kv[var.key_vault_instances.nonprod].id
-      name = azurerm_key_vault.kv[var.key_vault_instances.nonprod].name
-      url  = azurerm_key_vault.kv[var.key_vault_instances.nonprod].vault_uri
+      id   = azurerm_key_vault.kv[0].id
+      name = azurerm_key_vault.kv[0].name
+      url  = azurerm_key_vault.kv[0].vault_uri
     } : null
   }
   depends_on = [
@@ -44,6 +44,7 @@ output "container_registry" {
   value = var.container_registry ? {
     id  = azurerm_container_registry.registry[0].name
     url = azurerm_container_registry.registry[0].login_server
+    location = azurerm_container_registry.registry[0].location
   } : null
   depends_on = [
     azurerm_container_registry.registry

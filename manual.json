@@ -1,0 +1,13 @@
+{
+    "title": "Stacks Ancillary Resources",
+    "output": "{{ basepath }}/outputs/docs/{{ format }}",
+    "trunkBranch": "main",
+    "path": "{{ basepath }}/docs/index.adoc",
+    "pdf": {
+        "attributes": [
+            "pdf-theme={{ basepath }}/docs/styles/ensono_digital_theme.yml",
+            "pdf-fontsdir=\"{{ basepath }}/docs/styles/fonts;GEM_FONTS_DIR\"",
+            "allow-uri-read"
+        ]
+    }
+}

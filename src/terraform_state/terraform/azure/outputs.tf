@@ -3,7 +3,7 @@
 
 output "resource_group_name" {
   description = "Name of the resource group for the remote state"
-  value = azurerm_resource_group.rg.name
+  value       = azurerm_resource_group.rg.name
   depends_on = [
     azurerm_resource_group.rg
   ]
@@ -15,4 +15,9 @@ output "storage_account_name" {
   depends_on = [
     azurerm_storage_account.sa
   ]
+}
+
+output "input_variables" {
+  description = "JSON object of the input variables"
+  value       = jsonencode(var)
 }

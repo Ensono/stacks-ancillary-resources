@@ -1,0 +1,76 @@
+name: "$(Build.SourceBranchName)-init"
+
+variables:
+  - template: agent-config-vars.yml
+
+stages:
+
+  - stage: Build
+
+    jobs:
+
+      - job: generate_docs
+        displayName: Documentation
+        pool:
+          vmImage: $(pool_vm_image)
+
+        steps:
+
+          - template: ../templates/setup.yml
+            parameters:
+              TaskctlVersion: ${{ variables.TaskctlVersion }}
+              StacksEnvfileVersion: ${{ variables.StacksEnvfileVersion }}
+
+          - task: Bash@3
+            displayName: Generate
+            inputs:
+              targetType: inline
+              script: taskctl docs
+
+          # Upload the documentation
+          - task: PublishBuildArtifacts@1
+            displayName: Publish Documentation
+            inputs:
+              pathToPublish: $(Build.SourcesDirectory)/outputs/docs
+              artifactName: docs
+
+  - stage: Publish
+    dependsOn: Build
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+
+    jobs:
+
+      - job: publish_docs
+        displayName: Documentation
+        pool:
+          vmImage: $(pool_vm_image)
+
+        steps:
+
+          - template: ../templates/setup.yml
+            parameters:
+              TaskctlVersion: ${{ variables.TaskctlVersion }}
+              StacksEnvfileVersion: ${{ variables.StacksEnvfileVersion }}
+
+          # Download the necessary artifacts from the previous stage
+          # - documentation
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifact: 'docs'
+              patterns: '**/*.pdf'
+              path: $(Build.SourcesDirectory)/outputs/assets
+
+          - task: Bash@3
+            displayName: Release
+            inputs:
+              targetType: inline
+              script: |
+                taskctl release
+            env:
+              BUILDNUMBER: $(Build.BuildNumber)
+              API_KEY: $(GITHUB_TOKEN)
+              NOTES:
+              COMMIT_ID: $(Build.SourceVersion)
+              ARTIFACTS_DIR: outputs/assets
+              OWNER: amido
+              REPONAME: stacks-ancillary-resources

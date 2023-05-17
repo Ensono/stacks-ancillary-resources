@@ -1,0 +1,10 @@
+## Quick Start
+
+This page provides a very quick overview of the stages and commands that are required to get the initial parts of Stacks up and running.
+
+### Create the storage for the Terraform state
+
+#### Azure
+
+Create a file that defines the values for the Terraform variables, e.g.
+

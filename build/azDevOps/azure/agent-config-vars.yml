@@ -1,0 +1,19 @@
+variables:
+
+  # Agent configuration
+  - name: pool_vm_image
+    value: ubuntu-22.04
+  - name: TaskctlVersion
+    value: 1.4.2
+  - name: StacksEnvfileVersion
+    value: 0.0.16
+
+  # Versioning
+  - name: version_major
+    value: 0
+  - name: version_minor
+    value: 1
+  - name: version_revision
+    value: $[counter(join(variables['version_major'], join('-', variables['version_minor'])), 0)]
+  - name: version_number
+    value: $(version_major).$(version_minor).$(version_revision)

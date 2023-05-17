@@ -9,5 +9,5 @@ Full documentation can be found in the `docs/` directory. All documentation is w
 To generate the documentation as PDF document run the following command:
 
 ```
-docker run -it --rm -v ${PWD}:/app -w /app russellseymour/pandoc-asciidoctor asciidoctor-pdf -a doctype="book" -o "Stacks Ancillary Resources.pdf" -D local/ docs/index.adoc
+docker run -it --rm -v ${PWD}:/app -w /app amidostacks/runner-pwsh-asciidoctor:0.3.142-unstable pwsh -NoProfile -Command Build-Documentation -BasePath /app -Pdf -title Stacks-Ancillary-Resources
 ```

@@ -1,0 +1,28 @@
+name: infrastructure-tests
+
+# Include necessary variables for this pipeline file
+variables:
+  - template: azdo-pipeline-vars.yml
+  - group: azure-sp-creds
+
+stages:
+
+  - stage: Infrastructure Tests
+
+    jobs:
+
+      - job: terraform_state
+        displayName: Terraform State
+        pool:
+          vmImage: $(pool_vm_image)
+
+        steps:
+          - template: ../templates/setup.yml
+            parameters:
+              TaskctlVersion: ${{ variables.TaskctlVersion }}
+              StacksEnvfileVersion: ${{ variables.StacksEnvfileVersion }}
+
+          - template: ../templates/infra-tests.yml
+            parameters:
+              CHEF_LICENSE: $(CHEF_LICENSE)
+              TESTS_PATH: /app/src/terraform_state/tests/$(CLOUD_PLATFORM)

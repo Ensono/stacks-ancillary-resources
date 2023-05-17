@@ -7,10 +7,7 @@ default:
       description: Cloud that is being targeted, e.g. aws or azure
     - name: TESTS_PATH
       description: Path to the tests folder
-    - name: INSPEC_ARGS
       required: false
-    - name: CHEF_LICENSE
-      description: Inspec license needs to be accepted, set to `accept-silent`
   credentials:
     azure:
       - name: ARM_CLIENT_ID
@@ -29,6 +26,7 @@ stages:
         description: Path to the Terraform template files
       - name: TF_BACKEND_INIT
         description: Arguments that should be passed to Terraform during the init process
+        required: false
       - name: TF_BACKEND_PLAN
         description: Arguments that should be passed to Terraform during the plan process
         required: false
@@ -100,11 +98,7 @@ stages:
         description: The number of write units for this table
       - name: TESTS_PATH
         description: Path to the Inspec test files. This should be set in relation to the /app path for the container context.
-      - name: INSPEC_ARGS
-        description: Arguments to pass to Inspec
         required: false
-      - name: INSPEC_OUTPUT_PATH
-        description: Directory into which the tests results should be saved to
 
   - name: ancillary_resources
     variables:

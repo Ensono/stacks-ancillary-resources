@@ -1,16 +1,17 @@
 # This template creates the keyvault(s) for the specified instances
 #
-# This is defined by the `key_vault_instance` list
+# This is defined by the `key_vaults` list
 
 resource "azurerm_key_vault" "kv" {
 
-  for_each = toset(local.kv_instances)
+  # for_each = toset(local.kv_instances)
+  for_each = { for i, v in var.key_vaults : i => v }
 
-  name                = substr(format("%s-%s", module.default_name.id, each.value), 0, 24)
+  name                = substr(format("%s-%s", module.default_name.id, each.value.name), 0, 24)
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
-  sku_name = var.key_vault_sku
+  sku_name = each.value.sku != "" ? each.value.sku : var.key_vault_sku
 
   tenant_id = data.azurerm_client_config.service_principal.tenant_id
 

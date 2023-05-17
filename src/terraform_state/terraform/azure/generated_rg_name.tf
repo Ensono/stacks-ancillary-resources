@@ -7,7 +7,7 @@
 module "generated_rg_name" {
   source          = "git::https://github.com/cloudposse/terraform-null-label.git?ref=0.25.0"
   name            = var.resource_group_name
-  attributes      = concat(var.attributes, [random_string.generated_seed.result])
-  delimiter       = ""
+  attributes      = [""] # [random_string.generated_seed.result]
+  delimiter       = "-"
   id_length_limit = 24
 }

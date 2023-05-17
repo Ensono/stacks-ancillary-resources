@@ -12,6 +12,8 @@ contexts:
         - ${PWD}:/app
         - -v
         - /var/run/docker.sock:/var/run/docker.sock
+        - -v
+        - C:/Users/rseymour/workspaces/stacks/independent-runner/src/modules:/modules
         - -e
         - PSModulePath=/modules
         - -w
@@ -45,3 +47,15 @@ contexts:
         - -Command
     quote: "'"
     before: envfile -e path,home
+
+  docsenv:
+    executable:
+      bin: docker
+      args:
+        - run
+        - --rm
+        - -v ${PWD}:/app
+        - -w /app
+        - -e PSModulePath=/modules
+        - amidostacks/runner-pwsh-asciidoctor:0.3.151-stable
+        - pwsh -NoProfile -Command

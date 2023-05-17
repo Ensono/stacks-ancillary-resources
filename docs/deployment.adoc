@@ -1,5 +1,59 @@
 == Deployment
 
+Deploying the initial infrastructure for Amido Stacks is a two step process, the first of which is a manual deployment of the Terraform templates and the second one can be automated. The two steps are:
+
+1. Terraform State - this deploys the storage necessary, in Azure or AWS, to hold the Terraform state for future infrastructure
+2. Ancillary Resource - this deploys the base resources that Amido Stacks requires to function correctly
+
+The reason for the Terraform State being deployed manually is that it needs to be bootstrapped and have credentials for the Cloud platform onto which it is being deployed. This _can_ be done in a CI/CD pipeline but there are a number of chicken-and-egg problems that are avoided if the it is configured from a workstation, not least the state of the state itself.
+
+All configuration for both deployments is set using environment variables. In both cases there is a task that will configure a blank script with the necessary environment variables.
+
+.Creating the environment setup script
+[options="header",cols="1a,1a"]
+|====
+| PowerShell | Bash
+| 
+[source=powershell]
+----
+$env:STAGE = "terraform_state\|ancillary_resources"
+$env:CLOUD_PLATFORM = "aws\|azure"
+
+taskctl setup:dev
+----
+|
+[source="bash"]
+----
+export STAGE="terraform_state\|ancillary_resources"
+export CLOUD_PLATFORM="aws\|azure"
+
+taskctl setup:dev
+----
+|====
+
+When this is a run a script, either PowerShell or Bash based, will be created in `<repo_root>/local`. It's name will be dependent on the STAGE and the CLOUD_PLATFORM.
+
+|====
+.2+| Cloud .2+| Templates 2+^| Filename
+| PowerShell | Bash
+| AWS | `terraform_state` | `local/envvar-aws-terraform_state.ps1` | `local/envvar-aws-terraform_state.sh`
+|====
+
+=== Terraform State
+
+In order for Terraform state to be stored so that other deployments can access it, it needs to be saved in a central location. In Azure this is a Storage Account and in AWS this is an S3 Bucket.
+
+NOTE: It is not intended that this deployment is run more than once. This is because the state for these resources is not saved anywhere and locks are placed on the resources to protect them from accidental deletion.
+
+
+
+=== Ancillary Resources
+
+
+
+
+
+
 Setting up the infrastructure is a two step process. The first one deploys the storage for the Terraform state and the second one deploys the dependent infrastructure for Stacks.
 
 The process for running each one is very similar, the only difference is the configuration for each deployment. The following subsections describe the configuration and how to perform the deployments.
@@ -12,6 +66,12 @@ In both cases the pipeline uses the `build/config/stage_envvars.yml` file to det
 image::images/missing_env_variables.png[]
 
 There are times when default variables need to be checked for that apply to all stages, one such example of this are the credentials for the cloud. The file that determines what environment variables should exist, and therefore fail the build early if they do not, is `build/config/stage_envvars.yml`.
+
+
+
+
+
+
 
 The following table shows the environment variables that need to be configured regardless of which pipeline is being executed.
 

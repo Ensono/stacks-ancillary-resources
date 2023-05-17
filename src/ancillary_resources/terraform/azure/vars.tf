@@ -65,16 +65,52 @@ variable "key_vault_instances" {
   }
 }
 
+variable "kv_defaults" {
+  type = object({
+    nonprod = object({
+      name = string
+      sku  = string
+    })
+  })
+
+  default = {
+    nonprod = {
+      name = ""
+      sku  = "standard"
+    }
+    prod = {
+      name = ""
+      sku  = "standard"
+    }
+  }
+}
+
 variable "key_vault_sku" {
   type    = string
   default = "standard"
+}
+
+variable "key_vaults" {
+  type = list(object({
+    name = string
+    sku  = string
+  }))
+
+  default = [{
+    name = "nonprod"
+    sku  = ""
+    },
+    {
+      name = "prod"
+      sku  = ""
+    }
+  ]
 }
 
 variable "key_vault_secret_perms" {
   type    = list(string)
   default = ["Get", "List"]
 }
-
 variable "key_vault_key_perms" {
   type    = list(string)
   default = []
