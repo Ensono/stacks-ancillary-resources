@@ -26,3 +26,4 @@ stages:
             parameters:
               CHEF_LICENSE: $(CHEF_LICENSE)
               TESTS_PATH: /app/src/terraform_state/tests/$(CLOUD_PLATFORM)
+              STAGE: terraform_state

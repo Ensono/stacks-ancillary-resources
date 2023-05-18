@@ -3,6 +3,7 @@ parameters:
   INSPEC_ARGS:
   INSPEC_OUTPUT_PATH: /app/outputs/tests
   CHEF_LICENSE:
+  STAGE: 
 
 steps:
   - task: Bash@3
@@ -11,6 +12,7 @@ steps:
       targetType: inline
       script: taskctl tests
     env:
+      STAGE: ${{ parameters.stage }}
 
       # Ensure that the env vars are set for access
       # The following are the env vars that Inspec requires for authentication with Azure
