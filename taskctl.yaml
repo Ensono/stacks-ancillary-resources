@@ -9,7 +9,7 @@ pipelines:
     - task: lint:terraform:validate
 
   tests:
-    - task: setup:environment
+    # - task: setup:environment
     - task: tests:infra:vendor
       depends_on:
         - setup:environment
