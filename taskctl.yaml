@@ -11,8 +11,8 @@ pipelines:
   tests:
     # - task: setup:environment
     - task: tests:infra:vendor
-      depends_on:
-        - setup:environment
+    #  depends_on:
+    #    - setup:environment
     - task: tests:infra:run
       depends_on:
         - tests:infra:vendor
