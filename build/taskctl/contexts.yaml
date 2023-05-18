@@ -23,6 +23,29 @@ contexts:
     quote: "'"
     before: envfile -e home,path
 
+  infratests:
+    executable:
+      bin: docker
+      args:
+        - run
+        - --env-file
+        - envfile
+        - --rm
+        - -v
+        - ${PWD}:/app
+        - -v
+        - /var/run/docker.sock:/var/run/docker.sock
+        - -e
+        - PSModulePath=/modules
+        - -w
+        - /app
+        - amidostacks/runner-pwsh:0.3.173-stable
+        - pwsh
+        - -NoProfile
+        - -Command
+    quote: "'"
+    before: envfile -e home,path
+
   powershell-python:
     executable:
       bin: docker

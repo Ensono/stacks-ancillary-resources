@@ -61,19 +61,19 @@ tasks:
       - Confirm-Environment -Path /app/build/config/stage_envvars.yml
 
   tests:infra:init:
-    context: powershell
+    context: infratests
     description: Initialise the Inspec test profile
     command:
       - Invoke-Inspec -init
 
   tests:infra:vendor:
-    context: powershell
+    context: infratests
     description: Ensure all necessary plugins and providers are installed
     command:
       - Invoke-Inspec -vendor -args "--overwrite"
 
   tests:infra:run:
-    context: powershell
+    context: infratests
     description: Execute infrastructure tests against deployed Cloud resources
     command:
       - Invoke-Inspec -execute
