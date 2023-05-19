@@ -6,7 +6,7 @@ control 'azure-key-vaults' do
     desc "Tests that the expected number of Azure Key vaults have been deployed and the correct permissions have been set"
 
     # only run the control if the key_vault input does not equal 0
-    only_if { input('key_vault') != 0 }
+    only_if { input('key_vault') != "" }
 
     for item in input("key_vault") do
 
