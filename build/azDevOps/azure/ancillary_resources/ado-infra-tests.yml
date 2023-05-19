@@ -18,8 +18,9 @@ name: infra-tests-$(Date:yyyyMMdd).$(Rev:r)
 schedules:
   - cron: 0 6 * * *
     branches:
-      - main
-      - feature/remote-tfstate
+      include:
+        - main
+        - feature/remote-tfstate
     always: true
 
 stages:
