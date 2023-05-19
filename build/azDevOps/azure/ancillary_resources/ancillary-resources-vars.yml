@@ -7,7 +7,7 @@ variables:
   - name: location
     value: westeurope
 
-  - name: container-registry-name
+  - name: container_registry_name
     value: ensonodigitaleuw
 
   - name: dns_zones

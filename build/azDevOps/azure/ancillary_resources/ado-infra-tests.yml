@@ -12,7 +12,7 @@ variables:
   - name: CHEF_LICENSE
     value: accept-silent
 
-name: infra-tests-$(version_number)
+name: infra-tests-$(version_major).$(version_minor).$(version_revision)
 
 stages:
 
