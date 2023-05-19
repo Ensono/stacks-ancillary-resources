@@ -4,7 +4,7 @@ title "Container Registry"
 control "azure-container-registry" do
     desc "Ensure the deployed container registry has been configured correctly"
 
-    only_if { input('container_registry_name') != 0 }
+    only_if { input('container_registry_name') != "" }
 
     # Ensure that the container registry exists and is the correct location
     describe azure_container_registry(resource_group: input("resource_group_name"), name: input("container_registry_name")) do
