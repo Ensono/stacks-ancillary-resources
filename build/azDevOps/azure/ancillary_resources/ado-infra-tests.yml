@@ -1,4 +1,3 @@
-name: infra-tests-$(version_number)
 
 # Include necessary variables for this pipeline file
 variables:
@@ -12,6 +11,8 @@ variables:
   # Licensing
   - name: CHEF_LICENSE
     value: accept-silent
+
+name: infra-tests-$(version_number)
 
 stages:
 
@@ -64,7 +65,7 @@ stages:
             parameters:
               CHEF_LICENSE: $(CHEF_LICENSE)
               TESTS_PATH: /app/src/ancillary_resources/tests/$(CLOUD_PLATFORM)
-              INSPEC_ARGS: "--input resource_group_name=$(resource_group_name) region=$(location) container_registry_name=$(container_registry_name) dns_zones='$(dns_zones)' la_workspace=$(la_workspace) la_sku=$(la_sku) la_retention=$(la_retention) key_vault='$(key_vault)'"
+              INSPEC_ARGS: "--input resource_group_name=$(resource_group_name) region=$(location) container_registry_name=$(container_registry_name) dns_zones='$(dns_zones)' la_workspace=$(la_workspace) la_sku=$(la_sku) la_retention=$(la_retention) key_vault='$(key_vault)' azure_application_id=$(arm_client_id)"
               REPORT_FILENAME: inspec_azure_ancillary_resources.xml
 
           - task: PublishTestResults@2

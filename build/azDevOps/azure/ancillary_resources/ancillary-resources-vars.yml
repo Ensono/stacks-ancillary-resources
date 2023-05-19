@@ -23,4 +23,4 @@ variables:
     value: 30
 
   - name: key_vault
-    value: '[{"name": "ensonodigital-euw-nonpro"}, {"name": "ensonodigital-euw-prod"}]'
+    value: '[{"name": "ensonodigital-euw-nonpro", "sku": "standard"}, {"name": "ensonodigital-euw-prod", "sku": "standard"}]'
