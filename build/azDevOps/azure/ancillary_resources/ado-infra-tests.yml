@@ -14,6 +14,14 @@ variables:
 
 name: infra-tests-$(Date:yyyyMMdd).$(Rev:r)
 
+# Add schedule to run the infra tests everyday
+schedules:
+  - cron: 0 6 * * *
+    branches:
+      - main
+      - feature/remote-tfstate
+    always: true
+
 stages:
 
   - stage: infrastructure_tests
