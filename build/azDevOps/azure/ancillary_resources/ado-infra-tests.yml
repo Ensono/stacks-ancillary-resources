@@ -26,4 +26,4 @@ stages:
             parameters:
               CHEF_LICENSE: $(CHEF_LICENSE)
               TESTS_PATH: /app/src/terraform_state/tests/$(CLOUD_PLATFORM)
-              INSPEC_ARGS: "--input RG_NAME=$(resource_group_name) SA_NAME=$(storage_account_name) REGION=$(location)"
+              INSPEC_ARGS: "--input resource_group_name=$(resource_group_name) SA_NAME=$(storage_account_name) REGION=$(location)"
