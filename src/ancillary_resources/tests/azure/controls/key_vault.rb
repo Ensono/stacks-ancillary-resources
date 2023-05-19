@@ -1,6 +1,6 @@
 title "Key Vaults"
 
-input("azure_application_id", value: ENV["azure_client_id"])
+input("azure_application_id", value: ENV["arm_client_id"])
 
 control 'azure-key-vaults' do
     desc "Tests that the expected number of Azure Key vaults have been deployed and the correct permissions have been set"
