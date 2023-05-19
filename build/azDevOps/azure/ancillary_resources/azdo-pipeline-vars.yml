@@ -3,16 +3,6 @@
 
 variables:
 
-  - template: ../agent-config-vars.yml
-
-  # Cloud
-  - name: CLOUD_PLATFORM
-    value: azure
-
-  # Licensing
-  - name: CHEF_LICENSE
-    value: accept-silent
-
   # Terraform State resources
   # ------- General
   - name: location
