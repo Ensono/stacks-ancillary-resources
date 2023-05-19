@@ -29,6 +29,6 @@ stages:
               INSPEC_ARGS: "--input resource_group_name=$(resource_group_name) storage_account_name=$(storage_account_name) region=$(location)"
 
           - task: PublishTestResults@2
-            input:
+            inputs:
               testResultsFormat: JUnit
               testResultsFiles: outputs/tests/*.xml
