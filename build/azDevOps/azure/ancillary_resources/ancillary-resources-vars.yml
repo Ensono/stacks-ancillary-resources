@@ -2,7 +2,7 @@ variables:
 
   # Names of deployed ancillary resources
   - name: resource_group_name
-    value: stacks-anciallry-resources
+    value: stacks-ancillary-resources
 
   - name: location
     value: westeurope
