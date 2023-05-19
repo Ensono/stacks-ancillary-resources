@@ -13,10 +13,12 @@ steps:
     env:
       TESTS_PATH: ${{ parameters.tests_path }}
       CHEF_LICENSE: ${{ parameters.chef_license }}
+      INSPEC_ARGS: ${{ parameters.inspec_args }}
+      INSPEC_OUTPUT_PATH: ${{ parameters.inspec_output_path }}
 
       # Ensure that the env vars are set for access
       # The following are the env vars that Inspec requires for authentication with Azure
-      AZURE_CLIENT_ID: $ARM_CLIENT_ID
-      AZURE_CLIENT_SECRET: $ARM_CLIENT_SECRET
-      AZURE_SUBSCRIPTION_ID: $ARM_SUBSCRIPTION_ID
-      AZURE_TENANT_ID: $ARM_TENANT_ID
+      AZURE_CLIENT_ID: ${{ variables.ARM_CLIENT_ID }}
+      AZURE_CLIENT_SECRET: ${{ variables.ARM_CLIENT_SECRET }}
+      AZURE_SUBSCRIPTION_ID: ${{ variables.ARM_SUBSCRIPTION_ID }}
+      AZURE_TENANT_ID: ${{ variables.ARM_TENANT_ID }}
