@@ -27,3 +27,8 @@ stages:
               CHEF_LICENSE: $(CHEF_LICENSE)
               TESTS_PATH: /app/src/terraform_state/tests/$(CLOUD_PLATFORM)
               INSPEC_ARGS: "--input resource_group_name=$(resource_group_name) storage_account_name=$(storage_account_name) region=$(location)"
+
+          - task: PublishTestResults@2
+            input:
+              testResultsFormat: JUnit
+              testResultsFiles: outputs/tests/*.xml
