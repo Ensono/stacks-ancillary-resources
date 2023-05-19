@@ -12,7 +12,7 @@ variables:
   - name: CHEF_LICENSE
     value: accept-silent
 
-name: infra-tests-$(version_major).$(version_minor).$(version_revision)
+name: infra-tests-$(Date:yyyyMMdd).$(Rev:r)
 
 stages:
 
@@ -46,6 +46,7 @@ stages:
               testResultsFormat: JUnit
               testResultsFiles: outputs/tests/inspec_azure_tf_state.xml
               testRunTitle: Terraform Remote State Tests
+              failTaskOnFailedTests: true
 
       - job: ancillary_resources
         displayName: Ancillary Resources
@@ -73,4 +74,4 @@ stages:
               testResultsFormat: JUnit
               testResultsFiles: outputs/tests/inspec_azure_ancillary_resources.xml
               testRunTitle: Ancillary Resources Tests
-
+              failTaskOnFailedTests: true
