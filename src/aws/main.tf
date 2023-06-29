@@ -1,15 +1,25 @@
+# Naming convention
+module "default_label" {
+  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=0.24.1"
+  namespace   = format("%s-%s", var.name_company, var.name_project)
+  environment = var.name_environment
+  name        = "${lookup(var.location_name_map, var.region, "eu-west-2")}-${var.name_component}"
+  delimiter   = "-"
+  tags        = local.default_tags
+}
+
 ########################################
 # AWS Terraform backend composition
 ########################################
 
 module "terraform_remote_backend" {
 
-  source = "git::https://github.com/amido/stacks-terraform//aws/modules/infrastructure_modules/terraform_remote_backend"
+  source = "git::https://github.com/amido/stacks-terraform//aws/modules/infrastructure_modules/terraform_remote_backend?ref=v1.5.5"
 
-  env      = var.env
-  app_name = var.app_name
+  env      = var.name_environment
+  app_name = var.name_component
   region   = var.region
-  tags     = local.tags
+  tags     = local.default_tags
 
   ########################################
   ## Terraform State S3 Bucket
