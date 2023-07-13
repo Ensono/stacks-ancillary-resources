@@ -1,7 +1,7 @@
 
 # Include necessary variables for this pipeline file
 variables:
-  - group: azure-sp-creds
+  - group: ensono-sp-creds
   - template: ../agent-config-vars.yml
 
   # Cloud
