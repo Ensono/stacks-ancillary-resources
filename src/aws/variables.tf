@@ -124,3 +124,19 @@ variable "sse_enabled" {
   type        = string
   default     = true
 }
+
+########################################
+## DNS Zones
+########################################
+
+variable "enable_zone" {
+  type        = bool
+  default     = true
+  description = "Whether to create a root DNS zone in this account for use by the Stacks system."
+}
+
+variable "zone_name" {
+  description = "Name of the DNS zone"
+  type        = string
+  default     = "aws.stacks.ensono.com"
+}

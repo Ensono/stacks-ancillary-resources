@@ -44,3 +44,21 @@ module "terraform_remote_backend" {
   attribute_type = var.attribute_type
   sse_enabled    = var.sse_enabled
 }
+
+
+########################################
+## Route 53
+########################################
+
+module "route53_zones" {
+  source  = "terraform-aws-modules/route53/aws//modules/zones"
+  version = "~> 2.0"
+
+  count = var.enable_zone ? 1 : 0
+  zones = {
+    "${var.zone_name}" = {
+      comment = "Base zone for Stacks: ${var.zone_name}"
+      tags    = local.default_tags
+    }
+  }
+}
