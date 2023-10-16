@@ -26,4 +26,14 @@ resource "azurerm_key_vault" "kv" {
     storage_permissions     = var.key_vault_storage_perms
   }
 
+  network_acls {
+    default_action = "Deny"
+    bypass = "AzureServices"
+  }
+
+  lifecycle {
+    ignore_changes = [ 
+      tags,
+     ]
+  }
 }

@@ -113,7 +113,7 @@ variable "key_vault_secret_perms" {
 }
 variable "key_vault_key_perms" {
   type    = list(string)
-  default = []
+  default = ["Get"]
 }
 
 variable "key_vault_cert_perms" {
@@ -123,7 +123,7 @@ variable "key_vault_cert_perms" {
 
 variable "key_vault_storage_perms" {
   type    = list(string)
-  default = []
+  default = ["Get"]
 }
 
 # CONTAINER REGISTRY -----------------------
