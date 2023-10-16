@@ -4,7 +4,7 @@
 [options=header,cols="1,2,2"]
 |===
 | Abbreviation | Expansion | Reference
-| AIR | Amido Independent Runner | https://github.com/amido/independent-runner
+| AIR | Ensono Independent Runner | https://github.com/amido/independent-runner
 | AWS | Amazon Web Services |
 | ADO, AZDO | Azure DevOps |
 | GHA | GitHub Actions |

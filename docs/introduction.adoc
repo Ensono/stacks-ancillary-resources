@@ -1,6 +1,6 @@
 == Introduction
 
-Amido Stacks consists of lots of different blocks that make up the whole Stacks system. The Stacks-Ancillary-Resources repository is one of the foundation components for setting up the initial infrastructure. It is configured to work with Microsoft Azure, Amazon Web Services (AWS) and soon Google Cloud Platform (GCP).
+Ensono Stacks consists of lots of different blocks that make up the whole Stacks system. The Stacks-Ancillary-Resources repository is one of the foundation components for setting up the initial infrastructure. It is configured to work with Microsoft Azure, Amazon Web Services (AWS) and soon Google Cloud Platform (GCP).
 
 There are two sets of templates for each cloud in the repository, as outlined below. The sections also contain Inspec tests to ensure that the resources are setup correctly. The idea here is that they can be run as part of the infrastructure deployment as well as independently on a schedule. By running the tests on a schedule it is possible to provide an early warning system for items that have changed outside of the desired configuration.
 
@@ -8,7 +8,7 @@ Terraform is not solely used to keep the desired state correct as it _can_ be de
 
 === Terraform Remote State
 
-Amido Stacks uses Terraform templates to build out the infrastructure, however so that it can be maintained its state needs to be kept in a remote location. The repository contains the templates to set up the necessary storage in Azure or AWS for this purpose. This is the most basic resources required:
+Ensono Stacks uses Terraform templates to build out the infrastructure, however so that it can be maintained its state needs to be kept in a remote location. The repository contains the templates to set up the necessary storage in Azure or AWS for this purpose. This is the most basic resources required:
 
 .Cloud resources for Terraform state
 [options="header",cols="1a,1a,1a"]
@@ -26,7 +26,7 @@ Due to the templates setting up the remote state location the state for the temp
 
 === Ancillary Resources
 
-Other components for Amido Stacks include core infrastructure, such as Kubernetes, for different environments, e.g. DEV, PreProd and Prod for example.
+Other components for Ensono Stacks include core infrastructure, such as Kubernetes, for different environments, e.g. DEV, PreProd and Prod for example.
 
 However there are some components that need to be deployed in a more global capacity, such things are DNS Zones, Container Registries and Key Vaults.
 

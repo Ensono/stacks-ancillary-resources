@@ -6,9 +6,9 @@
 :pwsh-new-envconfig: {pwsh-repo}New-EnvConfig.ps1[New-EnvConfig]
 :pwsh-confirm-parameters: {pwsh-repo}Confirm-Parameters.ps1[Confirm-Parameters]
 
-The build process utilises the Amido Independent Runner (AIR). This means that it is possible to run that tasks and pipelines on a workstation as well as using a CI/CD build runner.
+The build process utilises the Ensono Independent Runner (AIR). This means that it is possible to run that tasks and pipelines on a workstation as well as using a CI/CD build runner.
 
-All of the tasks run within a container that contains all the necessary commands and tools to run that task. One of the tools used is the AmidoBuild PowerShell Module which is used by all the tasks. Please look at the https://github.com/amido/independent-runner[Amido Independent Runner] for more information.
+All of the tasks run within a container that contains all the necessary commands and tools to run that task. One of the tools used is the AmidoBuild PowerShell Module which is used by all the tasks. Please look at the https://github.com/amido/independent-runner[Ensono Independent Runner] for more information.
 
 The following table describes the tasks that are available
 

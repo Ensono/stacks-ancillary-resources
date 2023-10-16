@@ -2,10 +2,10 @@
 
 == Pre-requisites
 
-Amido Stacks has been designed to be as contained as possible. In order to achieve this it relies heavily on Docker containers and environment variables. This means that there are a few of pre-requisites that need to be installed to run the pipeline on a local workstation.
+Ensono Stacks has been designed to be as contained as possible. In order to achieve this it relies heavily on Docker containers and environment variables. This means that there are a few of pre-requisites that need to be installed to run the pipeline on a local workstation.
 
 1. Docker - this is used to run the containers that the pipeline requires
-2. https://github.com/amido/stacks-envfile[EnvFile] - this is a utility written by Amido that properly creates an environment file that is compatible with Docker to ensure that the container has the correct environment variables.
+2. https://github.com/amido/stacks-envfile[EnvFile] - this is a utility written by Ensono that properly creates an environment file that is compatible with Docker to ensure that the container has the correct environment variables.
 3. https://github.com/taskctl/taskctl[Tascktl] - this application is used as the independent runner which means all CI/CD platforms and local runs are executed in exactly the same way.
 
 If the credentials, for Terraform and Inspec to access the Cloud provider, are being created on the command line then at least one of the following will be required in addition to the tools stated above.

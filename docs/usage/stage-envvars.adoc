@@ -44,7 +44,7 @@ image::{image_path}/setup-env-minimal.png[]
 
 IMPORTANT: This repository uses InSpec to perform tests against the cloud resources. Although it is available under the Apache licence its license must be accepted in the container. This has *not* been accepted by default and if this is not set InSpec will raise an error when those tasks are executed.
 
-Now if the command is run again after the missing environment variables have been set the output is much more informative. In this case the terraform state templates are being targeted, these are the templates that configure the remote state storage for Amido Stacks.
+Now if the command is run again after the missing environment variables have been set the output is much more informative. In this case the terraform state templates are being targeted, these are the templates that configure the remote state storage for Ensono Stacks.
 
 .Checking environment for Azure and Terraform state templates
 image::{image_path}/setup-env-azure-terraform-state.png[]

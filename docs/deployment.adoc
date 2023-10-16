@@ -1,9 +1,9 @@
 == Deployment
 
-Deploying the initial infrastructure for Amido Stacks is a two step process, the first of which is a manual deployment of the Terraform templates and the second one can be automated. The two steps are:
+Deploying the initial infrastructure for Ensono Stacks is a two step process, the first of which is a manual deployment of the Terraform templates and the second one can be automated. The two steps are:
 
 1. Terraform State - this deploys the storage necessary, in Azure or AWS, to hold the Terraform state for future infrastructure
-2. Ancillary Resource - this deploys the base resources that Amido Stacks requires to function correctly
+2. Ancillary Resource - this deploys the base resources that Ensono Stacks requires to function correctly
 
 The reason for the Terraform State being deployed manually is that it needs to be bootstrapped and have credentials for the Cloud platform onto which it is being deployed. This _can_ be done in a CI/CD pipeline but there are a number of chicken-and-egg problems that are avoided if the it is configured from a workstation, not least the state of the state itself.
 

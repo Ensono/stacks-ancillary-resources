@@ -1,6 +1,6 @@
 == Terraform State
 
-All of the Amido Stacks projects use a remote location for the Terraform state, e.g. Azure Storage Account or an S3 bucket for example. However this repository is the exception. This is because the storage account that will be used for the remote state is deployed by the templates in this repository.
+All of the Ensono Stacks projects use a remote location for the Terraform state, e.g. Azure Storage Account or an S3 bucket for example. However this repository is the exception. This is because the storage account that will be used for the remote state is deployed by the templates in this repository.
 
 It would be a catch 22 situation as Terraform needs to write to the storage account that already exists but this repo will need to save its state to an account that does not exist. For this reason the terraform state templates does not have a build because the state cannot easily be saved for updates at a later date.
 
