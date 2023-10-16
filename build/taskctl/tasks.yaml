@@ -82,4 +82,5 @@ tasks:
     context: docsenv
     description: Generate the documentation
     command:
-      - Build-Documentation -BasePath /app -config /app/manual.json -pdf
+      - Invoke-AsciiDoc -BasePath /app -config /app/manual.json -pdf
+    
