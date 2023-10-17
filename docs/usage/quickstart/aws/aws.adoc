@@ -1,0 +1,9 @@
+:cloud-platform: aws
+:chef-license: accept-silent
+:tests-path-tf-state: /app/src/terraform_state/tests
+
+This section details how to deploy the storage for the Terraform state onto Amazon Web Services (AWS).
+
+include::authentication.adoc[]
+
+include::tf-state-storage.adoc[]

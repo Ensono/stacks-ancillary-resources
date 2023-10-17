@@ -1,0 +1,53 @@
+==== Create State Storage
+
+Create the script for the the environment variables.
+
+[options="header",cols="1a,1a"]
+|====
+| Bash | PowerShell
+| 
+[source,bash,subs="verbatim,attributes"]
+----
+export CLOUD_PLATFORM="{cloud-platform}"
+export TESTS_PATH="{tests-path-tf-state}"
+export CHEF_LICENSE="{chef-license}"
+export STAGE="terraform_state"
+
+taskctl setup:dev
+---- | 
+[source,powershell,subs="verbatim,attributes"]
+----
+$env:CLOUD_PLATFORM = "{cloud-platform}"
+$env:TESTS_PATH = "{tests-path-tf-state}"
+$env:CHEF_LICENSE = "{chef-license}"
+$env:STAGE = "terraform_state"
+
+taskctl setup:dev
+----
+|====
+
+NOTE: The `local/` folder is ignored by Git, so no secrets will be exposed in the repository from this file.
+
+Update this file accordingly with the values required for your environment. When complete, execute the file and then run the task to deploy the Terraform state.
+
+WARNING: These environment variables are in addition to the ones that were configured in the step to create the script file.
+
+[options="header",cols="1a,1a"]
+|====
+| Bash | PowerShell
+| 
+[source,bash,subs="verbatim,attributes"]
+----
+./local/envar-azure-terraform_state.sh
+
+taskctl infrastructure
+---- | 
+[source,powershell,subs="verbatim,attributes"]
+----
+./local/envar-azure-terraform_state.ps1
+
+taskctl infrastructure
+----
+|====
+
+

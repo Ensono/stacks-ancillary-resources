@@ -1,0 +1,55 @@
+==== Deploy Ancillary Resources
+
+Now that the storage has been deployed for the Terraform state, the resources that are required for Ensono Stacks can be deployed. The way in which this is achieved is very similar to setting up the state storage. The task that generates the script file for the state storage can be used to again to create the file necessary for the resources.
+
+[options="header",cols="1a,1a"]
+|====
+| Bash | PowerShell
+| 
+[source,bash,subs="verbatim,attributes"]
+----
+export CLOUD_PLATFORM="{cloud-platform}"
+export TESTS_PATH="{tests-path-tf-state}"
+export CHEF_LICENSE="{chef-license}"
+export STAGE="ancillary_resources"
+
+taskctl setup:dev
+---- | 
+[source,powershell,subs="verbatim,attributes"]
+----
+$env:CLOUD_PLATFORM = "{cloud-platform}"
+$env:TESTS_PATH = "{tests-path-tf-state}"
+$env:CHEF_LICENSE = "{chef-license}"
+$env:STAGE = "ancillary_resources"
+
+taskctl setup:dev
+----
+|====
+
+This will create another script with stubbed out environment variables, that need to updated to deploy the resources.
+
+image::images/azure-ancillary-resources-envvar-script.png[]
+
+NOTE: There are a number of variables that can be set to control the deployment into Azure. This script contains th4e ones that are required to perform a deployment. The other values that can be set are detailed in the <<Stage Environment Variables>> section.
+
+WARNING: These environment variables are in addition to the ones that were configured in the step to create the script file.
+
+When the script has been updated, run it and then perform the deployment.
+
+[options="header",cols="1a,1a"]
+|====
+| Bash | PowerShell
+| 
+[source,bash,subs="verbatim,attributes"]
+----
+./local/envar-azure-ancillary_resources.sh
+
+taskctl infrastructure
+---- | 
+[source,powershell,subs="verbatim,attributes"]
+----
+./local/envar-azure-ancillary_resources.ps1
+
+taskctl infrastructure
+----
+|====

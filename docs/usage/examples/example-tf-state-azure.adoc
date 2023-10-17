@@ -1,3 +1,0 @@
-==== Deploy Remote Terraform state for Azure
-
-To perform a deployment of the Terraform State storage on Azure, the local environment variables need to be configured. As discussed previously,.

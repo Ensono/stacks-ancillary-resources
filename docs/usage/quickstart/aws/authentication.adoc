@@ -1,0 +1,11 @@
+==== Authentication
+
+In order for Terraform to deploy to AWS, it needs to credentials. These are supplied as environment variables:
+
+- AWS_ACCESS_KEY_ID
+- AWS_SECRET_ACCESS_KEY
+- AWS_REGION
+
+The following examples assume that the access keys used are the ones that belong to the IAM user. If additional keys are required please refer to https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html[Managing AccessKeys for IAM Users]
+
+Once the key have been retrieved set the values for the environment variables as shown above.

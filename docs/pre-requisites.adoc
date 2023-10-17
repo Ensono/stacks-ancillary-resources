@@ -21,7 +21,7 @@ NOTE: For the CI/CD platforms the pipeline will install the `envfile` applicatio
 
 In order for Terraform to be able to deploy resources into the supported cloud platforms a user needs to be created with the appropriate permissions.
 
-==== icon:windows[]  Azure
+==== icon:windows[role=blue]  Azure
 
 When deploying into Azure, Terraform uses a Service Principal (SP). This needs to be created with at least "Contributor" access and with some extra role assignments to allow the SP to add management locks to resources so they cannot be deleted inadvertently.
 
@@ -82,7 +82,7 @@ New-AzRoleAssignment -ObjectID  4c0c1042-4337-49be-885e-849ef5c11736 -RoleDefini
 ----
 |====
 
-==== icon:amazon[] AWS
+==== icon:amazon[role=aws] AWS
 
 Access to AWS to perform the deployment is done using access keys from your Identity Access Management (IAM) account.
 

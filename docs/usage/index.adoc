@@ -6,4 +6,6 @@ include::stage-envvars.adoc[]
 
 include::setup-local.adoc[]
 
-include::examples.adoc[]
+<<<
+
+include::quickstart.adoc[]

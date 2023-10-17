@@ -5,6 +5,8 @@ default:
   variables:
     - name: CLOUD_PLATFORM
       description: Cloud that is being targeted, e.g. aws or azure
+    - name: STAGE
+      description: The stage that is being deployed by this pipeline run
     - name: TESTS_PATH
       description: Path to the tests folder
       required: false
@@ -103,10 +105,15 @@ stages:
   - name: ancillary_resources
     variables:
       - name: TF_FILE_LOCATION
+        description: Path to the Terraform template files
       - name: TF_BACKEND_INIT
+        description: Arguments that should be passed to Terraform during the init process
       - name: TF_BACKEND_PLAN
+        description: Arguments that should be passed to Terraform during the plan process
       - name: TF_VAR_location
+        description: Azure location that the resources should be deployed to
       - name: TF_VAR_company_name
+        description: Name of company or project to use in the name
       - name: TF_VAR_resource_group_name
         required: false
       - name: TF_VAR_dns_zones

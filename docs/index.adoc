@@ -5,7 +5,9 @@
 :listing-caption: Listing
 :icons: font
 :image_path: images
+:page-background-image: image:images/page-image.png[position=top right]
 :toc:
+:toclevels: 3
 
 = Stacks Ancillary Resources
 
@@ -20,10 +22,6 @@ include::pre-requisites.adoc[]
 <<<
 
 include::usage/index.adoc[]
-
-<<<
-
-include::aws.adoc[]
 
 <<<
 

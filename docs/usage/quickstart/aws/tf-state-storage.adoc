@@ -1,25 +1,4 @@
-:cloud-platform: aws
-:chef-license: accept-silent
-:tests-path-tf-state: /app/src/terraform_state/tests
-
-
-=== AWS
-
-This section shows how to setup the necessary infrastructure on AWS.
-
-==== Authentication
-
-In order for Terraform to deploy to AWS, it needs to credentials. These are supplied as environment variables:
-
-- AWS_ACCESS_KEY_ID
-- AWS_SECRET_ACCESS_KEY
-- AWS_REGION
-
-The following examples assume that the access keys used are the ones that belong to the IAM user. If additional keys are required please refer to https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html[Managing AccessKeys for IAM Users]
-
-Once the key have been retrieved set the values for the environment variables as shown above.
-
-==== Creating the Terraform State resources
+==== Create State Storage
 
 The independent runner will be used to create the resources which will be used to store the Terraform state for future infrastructure runs. A number of environment variables are required to ensure that the correct templates are used and AWS is targeted.
 
@@ -38,22 +17,46 @@ Set the environment variables accordingly.
 |====
 | Bash | PowerShell
 | 
-[source,bash]
+[source,bash,subs="verbatim,attributes"]
 ----
 export CLOUD_PLATFORM="{cloud-platform}"
 export TESTS_PATH="{tests-path-tf-state}"
 export CHEF_LICENSE="{chef-license}"
 export STAGE="terraform_state"
+
+taskctl setup:dev
 ---- | 
-[source,powershell]
+[source,powershell,subs="verbatim,attributes"]
 ----
 $env:CLOUD_PLATFORM = "{cloud-platform}"
 $env:TESTS_PATH = "{tests-path-tf-state}"
 $env:CHEF_LICENSE = "{chef-license}"
 $env:STAGE = "terraform_state"
+
+taskctl setup:dev
 ----
 |====
 
-When the command is run again another set of variables that are required will be displayed.
+NOTE: The `local/` folder is ignored by Git, so no secrets will be exposed in the repository from this file.
 
-NOTE: The AWS credential variables have not be displayed because they were set in the authentication section above.
+This command generates a script which have environment variables configured. Update this file accordingly with the necessary values for the deployment.
+
+WARNING: These environment variables are in addition to the ones that were configured in the step to create the script file.
+
+[options="header",cols="1a,1a"]
+|====
+| Bash | PowerShell
+| 
+[source,bash,subs="verbatim,attributes"]
+----
+./local/envar-aws-terraform_state.sh
+
+taskctl infrastructure
+---- | 
+[source,powershell,subs="verbatim,attributes"]
+----
+./local/envar-aws-terraform_state.ps1
+
+taskctl infrastructure
+----
+|====
