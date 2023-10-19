@@ -1,17 +1,32 @@
 :source-highlighter: rouge
-:pdf-theme: styles/theme.yml
-:pdf-fontsdir: styles/fonts;GEM_FONTS_DIR
+:pdf-theme: docs/styles/ensono_digital_theme.yml
+:pdf-fontsdir: docs/styles/fonts;GEM_FONTS_DIR
 :table-stripes: even
 :listing-caption: Listing
 :icons: font
+:image_path: images
+:page-background-image: image:images/page-image.png[position=top right]
+:toc:
+:toclevels: 3
 
 = Stacks Ancillary Resources
 
+<<<
+
 include::introduction.adoc[]
 
-include::deployment.adoc[]
+<<<
+
+include::pre-requisites.adoc[]
+
+<<<
+
+include::usage/index.adoc[]
+
+<<<
 
 include::tfstate.adoc[]
 
-include::glossary.adoc[]
+<<<
 
+include::glossary.adoc[]

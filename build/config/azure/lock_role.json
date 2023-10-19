@@ -1,0 +1,17 @@
+{
+    "Name": "Manage Locks",
+    "IsCustom": true,
+    "Description": "Role that allows other users and apps to create new role assignments and locks",
+    "Actions": [
+        "Microsoft.Authorization/locks/read",
+        "Microsoft.Authorization/locks/write",
+        "Microsoft.Authorization/locks/delete",
+        "Microsoft.Authorization/roleAssignments/read",
+        "Microsoft.Authorization/roleAssignments/write",
+        "Microsoft.Authorization/roleAssignments/delete"
+    ],
+    "NotActions": [],
+    "AssignableScopes": [
+
+    ]
+}

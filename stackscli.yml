@@ -1,0 +1,21 @@
+pipeline:
+  - type: azdo
+    files:
+      - name: build
+        path: build/azDevOps/azure/azuredevops-pipeline.yml
+      - name: variable
+        path: build/azDevOps/azure/azuredevops-vars.yml
+    templates:
+      - name: variable
+        path: build/azDevOps/azure/azuredevops-vars-template.yml
+  - type: gha
+    files:
+      - name: build
+        path: .github/workflows/ci.yml
+    templates:
+      - name: build
+        path: build/github/aws/ci_TEMPLATE.yml
+
+setup:
+  operations:
+    - action: copy

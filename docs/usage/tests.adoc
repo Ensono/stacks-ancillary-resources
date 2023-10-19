@@ -1,0 +1,27 @@
+=== Tests
+
+Testing is vital to any deployment and as such the state of the deployed infrastructure needs to be continually assessed. This ensures that it has been configured correctly in the first place and has not been modified by other out-of-band means, e.g. manually in the Azure portal.
+
+All of the infrastructure tests are performed using the Terratest Golang library https://github.com/gruntwork-io/terratest. This allows the testing of the infrastructure to be performed using Go tests and are run using the `go test` command.
+
+NOTE: The normal operation for Terratest is to apply, run the tests and then teardown the infrastructure after each run. The tests in this repo have been designed so that they can be run frequently against existing infrastructure. The result is that appropriate environment variables need to be configured to access the state, either locally or remotely.
+
+So that all the tests can be stored in the same location, but only run for the appropriate cloud plaform and stage of the deployment, build flags are used. So for example the following,
+
+----
+go test -v ./... --tags=azure,terraformtest
+----
+
+means that the only the tests associated with Azure and the Terraform remote state will be run. In this example this would be the tests in `src/tests/azure/state_test.go`.
+
+As the underlying command being run is Terraform the same environment variables and inputs need to be configured before running the tests. Some of the tests have variables that need to be configured, when run, on the command line.
+
+The following tables show the tests and the expected inputs that are required and their default values.
+
+.Azure Terraform state storage tests
+|====
+| Name | Description | Default Value | Environment
+| subscriptionid | Azure subscription ID in which the resources reside | | `ARM_SUBSCRIPTION_ID`
+| container | Name of the container in the Storage Account holding the state | `tfstate` |
+|====
+

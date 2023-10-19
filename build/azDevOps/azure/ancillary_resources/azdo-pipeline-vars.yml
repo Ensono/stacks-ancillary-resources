@@ -1,0 +1,25 @@
+# This file contains the variables that are required for the pipeline in Azure DevOps
+# Ths pipeline in this folder is for deploying the resources to Azure in AzDo
+
+variables:
+
+  # Terraform State resources
+  # ------- General
+  - name: location
+    value: westeurope
+  - name: env
+    value: base
+
+  # ------- Azure
+  - name: resource_group_name
+    value: stacks-terraform-state
+  - name: storage_account_name
+    value: stacksstatehjfis
+  - name: container_name
+    value: tfstate
+
+  # ------- AWS
+  - name: application_name
+    value: ""
+  - name: app_name
+    value: $(application_name)

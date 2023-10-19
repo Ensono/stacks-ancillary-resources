@@ -1,0 +1,11 @@
+:cloud-platform: azure
+:chef-license: accept-silent
+:tests-path-tf-state: /app/src/terraform_state/tests
+
+This section details how to deploy the storage for the Terraform state as well the ancillary resources that are required to support Stacks in Azure.
+
+include::authentication.adoc[]
+
+include::tf-state-storage.adoc[]
+
+include::deploy-resources.adoc[]

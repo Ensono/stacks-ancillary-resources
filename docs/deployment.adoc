@@ -1,52 +1,111 @@
 == Deployment
 
-Deployment of the templates is the same as any other deployment, apart from not setting the remote state backend.
+Deploying the initial infrastructure for Ensono Stacks is a two step process, the first of which is a manual deployment of the Terraform templates and the second one can be automated. The two steps are:
 
-=== Variables
+1. Terraform State - this deploys the storage necessary, in Azure or AWS, to hold the Terraform state for future infrastructure
+2. Ancillary Resource - this deploys the base resources that Ensono Stacks requires to function correctly
 
-The following table details the variables that can be specified when deploying the infrastructure.
+The reason for the Terraform State being deployed manually is that it needs to be bootstrapped and have credentials for the Cloud platform onto which it is being deployed. This _can_ be done in a CI/CD pipeline but there are a number of chicken-and-egg problems that are avoided if the it is configured from a workstation, not least the state of the state itself.
 
-.Terraform Variables
-[options=header]
+All configuration for both deployments is set using environment variables. In both cases there is a task that will configure a blank script with the necessary environment variables.
+
+.Creating the environment setup script
+[options="header",cols="1a,1a"]
+|====
+| PowerShell | Bash
+| 
+[source=powershell]
+----
+$env:STAGE = "terraform_state\|ancillary_resources"
+$env:CLOUD_PLATFORM = "aws\|azure"
+
+taskctl setup:dev
+----
+|
+[source="bash"]
+----
+export STAGE="terraform_state\|ancillary_resources"
+export CLOUD_PLATFORM="aws\|azure"
+
+taskctl setup:dev
+----
+|====
+
+When this is a run a script, either PowerShell or Bash based, will be created in `<repo_root>/local`. It's name will be dependent on the STAGE and the CLOUD_PLATFORM.
+
+|====
+.2+| Cloud .2+| Templates 2+^| Filename
+| PowerShell | Bash
+| AWS | `terraform_state` | `local/envvar-aws-terraform_state.ps1` | `local/envvar-aws-terraform_state.sh`
+|====
+
+=== Terraform State
+
+In order for Terraform state to be stored so that other deployments can access it, it needs to be saved in a central location. In Azure this is a Storage Account and in AWS this is an S3 Bucket.
+
+NOTE: It is not intended that this deployment is run more than once. This is because the state for these resources is not saved anywhere and locks are placed on the resources to protect them from accidental deletion.
+
+
+
+=== Ancillary Resources
+
+
+
+
+
+
+Setting up the infrastructure is a two step process. The first one deploys the storage for the Terraform state and the second one deploys the dependent infrastructure for Stacks.
+
+The process for running each one is very similar, the only difference is the configuration for each deployment. The following subsections describe the configuration and how to perform the deployments.
+
+Taskctl needs to know what stage of the pipeline to run so that the environment setup can be confirmed. To do this an environment variable called `STAGE` meeds to be configured. For this repository this needs to be set to either `terraform_state` or `ancillary_resources`.
+
+In both cases the pipeline uses the `build/config/stage_envvars.yml` file to determine what environment variables are required for each stage pipeline. If theses environment variables are not set an error similar to the following will be displayed.
+
+.Missing environment variables for the `terraform_state` stage
+image::images/missing_env_variables.png[]
+
+There are times when default variables need to be checked for that apply to all stages, one such example of this are the credentials for the cloud. The file that determines what environment variables should exist, and therefore fail the build early if they do not, is `build/config/stage_envvars.yml`.
+
+
+
+
+
+
+
+The following table shows the environment variables that need to be configured regardless of which pipeline is being executed.
+
+.Common environment variables for all stages, dependent on Cloud platform
+[options="header"]
+|====
+| Name | Description | Cloud | Example
+| AZURE_CLIENT_ID | ID of the Service Principal (SP) that will be used to perform the deployment | `decc1b38-9e04-45df-81db-06fae6f5c192` | Azure
+| AZURE_CLIENT_SECRET | Secret associated with the SP | ljjk9887df;llkmkiojoijio | Azure
+| AZURE_SUBSCRIPTION_ID | Subscription which the SP belongs to | 61296901-b864-4045-8d19-ef84984d4662 | Azure
+| AZURE_TENANT_ID | Tenant that the subscription belongs to | Azure
+|====
+
+NOTE: Only default variables and the credentials that apply to the cloud being deployed to need to be configured.
+
+=== Terraform State
+
+The following environment variables must be set in order for the storage resources to be deployed.
+
+.Required environment variables for Terraform state
+[options="header"]
 |===
-| Name | Environment Var Name | Description | Default Value
-| `resource_group_name` | TF_VAR_resource_group_name | Name of the resource group to create for the resources | Stacks-Ancillary-Resources
-| `location` | TF_VAR_location | Location in Azure for all the resources | uksouth
-| `sa_name` | TF_VAR_sa_name | Name of the storage account to create for the Terraform state | amidostackstfstate
-| `sa_container` | TF_VAR_sa_container | Name of container to create to store the state files for all deployments | tfstate
-| `key_vault_name_nonprod` | TF_VAR_key_vault_name_nonprod | Name of the Key Vault to create for non-production details | stacks-nonprod-kv
-| `key_vault_name_prod` | TF_VAR_key_vault_name_prod | Name of the Key Vault to create for production details | stacks-prod-kv
-| `key_vault_sku` | TF_VAR_key_vault_sku | SKU for the Key Vault | standard
-| `la_name` | TF_VAR_la_name | Name of the log analytics workspace to create | stacks-la
-| `la_sku` | TF_VAR_la_sku | SKU to use for log analytics | PerGB2018
-| `la_retention` | TF_VAR_la_retention | Number of days to keep logs for | 30
-| `app_tenant_id` | TF_VAR_app_tenant_id | Tenant ID of the application that needs to access thje key vault |
-| `app_object_id` | TF_VAR_app_object_id | Object ID of the application accessing the vault | 
-| `app_application_id` | TF_VAR_app_application_id | Application ID (client id) of the application |
-| `dns_zones` | TF_VAR_dns_zones | List of public DNS zones to create |
-| `dns_private_zones` | TF_VAR_dns_zones | List of private DNS zones to create |
-|=== 
+| Name | Description | Example
+| ENV_NAME | Used by Terraform to determine the workspace to work under | `dev`
+| TF_FILE_LOCATION | Location of the templates to use.
+All tasks are run in a container with the repository root mapped to `/app` in the container. | `/app/src/terraform_state/templates/azure`
+| TF_BACKEND_INIT | The arguments to pass to Terraform when initializing the templates
 
-NOTE: The variables that do not have a default value must be specified as a variable on the command line, as an environment variable or in a file. If not specified then Terraform will run in interactive mode to ask for the value.
+As this is the first set of resources to be deployed there is no remote storage for the state to be stored in, so the backend is configure with  | `false`
+| TF_BACKEND_PLAN | Arguments to pass to TF for the plan stage. Terraform will attempt to ask for the variables that are missing, but there is no interactive session available so this is turned off. | `-input=false,-out=tfplan`
+| TF_VAR_name | Name of the company or project to be used in the name.
 
-In order to perform a deployment into Azure, credentials must be supplied. The best way to do this is to configure a Service Princpal (SP) in Azure with a role of 'Contributor'. The details of this SPN are then set as environment variables that Terraform will use to authenticate with Azure.
+The name of the storage account is derived from several items, this being one of them. It is used to try and ensure the storage is globally unique | `turtle`
+|===
 
-[source,powershell]
-----
-cd src/
+After these environment variables have been configured, the pipeline can be run.
 
-# Configure the environment variables for the initalisation
-$env:ARM_CLIENT_ID=
-$env:ARM_CLIENT_SECRET=
-$env:ARM_SUBSCRIPTION_ID=
-$env:ARM_TENANT_ID=
-
-terraform init
-
-# Plan the deployment
-terraform plan -input=false -out=tfplan
-
-# Deploy the resources
-terraform apply tfplan
-
-----

@@ -1,0 +1,62 @@
+==== Create State Storage
+
+The independent runner will be used to create the resources which will be used to store the Terraform state for future infrastructure runs. A number of environment variables are required to ensure that the correct templates are used and AWS is targeted.
+
+The independent runner has a mechanism that allows it to display which environment variables are required, so just running `taskctl infrastructure` should produce output similar to the following.
+
+.Initial independent runner execution
+image::images/air-check-environment.png[]
+
+In this case the runner has detected that three environment variables are missing, please refer to <<Environment Variables>> for a full list of the variables that can be set.
+
+NOTE: Due to the way in which the templates are deployed setting these variables may mean that additional variables need to be set, but this will only be displayed once these initial variables are configured.
+
+Set the environment variables accordingly.
+
+[options="header",cols="1a,1a"]
+|====
+| Bash | PowerShell
+| 
+[source,bash,subs="verbatim,attributes"]
+----
+export CLOUD_PLATFORM="{cloud-platform}"
+export TESTS_PATH="{tests-path-tf-state}"
+export CHEF_LICENSE="{chef-license}"
+export STAGE="terraform_state"
+
+taskctl setup:dev
+---- | 
+[source,powershell,subs="verbatim,attributes"]
+----
+$env:CLOUD_PLATFORM = "{cloud-platform}"
+$env:TESTS_PATH = "{tests-path-tf-state}"
+$env:CHEF_LICENSE = "{chef-license}"
+$env:STAGE = "terraform_state"
+
+taskctl setup:dev
+----
+|====
+
+NOTE: The `local/` folder is ignored by Git, so no secrets will be exposed in the repository from this file.
+
+This command generates a script which have environment variables configured. Update this file accordingly with the necessary values for the deployment.
+
+WARNING: These environment variables are in addition to the ones that were configured in the step to create the script file.
+
+[options="header",cols="1a,1a"]
+|====
+| Bash | PowerShell
+| 
+[source,bash,subs="verbatim,attributes"]
+----
+./local/envar-aws-terraform_state.sh
+
+taskctl infrastructure
+---- | 
+[source,powershell,subs="verbatim,attributes"]
+----
+./local/envar-aws-terraform_state.ps1
+
+taskctl infrastructure
+----
+|====

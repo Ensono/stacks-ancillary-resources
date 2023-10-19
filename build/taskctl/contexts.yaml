@@ -1,0 +1,84 @@
+contexts:
+
+  powershell:
+    executable:
+      bin: docker
+      args:
+        - run
+        - --env-file
+        - envfile
+        - --rm
+        - -v
+        - ${PWD}:/app
+        - -v
+        - /var/run/docker.sock:/var/run/docker.sock
+        - -v
+        - c:/Users/rseymour/workspaces/stacks/independent-runner/src:/modules
+        - -e
+        - PSModulePath=/modules
+        - -w
+        - /app
+        - amidostacks/runner-pwsh:0.4.26-unstable
+        - pwsh
+        - -NoProfile
+        - -Command
+    quote: "'"
+    before: envfile -e home,path
+
+  infratests:
+    executable:
+      bin: docker
+      args:
+        - run
+        - --env-file
+        - envfile
+        - --rm
+        - -v
+        - ${PWD}:/app
+        - -v
+        - /var/run/docker.sock:/var/run/docker.sock
+        - -e
+        - PSModulePath=/modules
+        - -w
+        - /app
+        - amidostacks/runner-pwsh-inspec
+        - pwsh
+        - -NoProfile
+        - -Command
+    quote: "'"
+    before: envfile -e home,path
+
+  powershell-python:
+    executable:
+      bin: docker
+      args:
+        - run
+        - --rm
+        - -v
+        - ${PWD}:/app
+        - -v
+        - /var/run/docker.sock:/var/run/docker.sock
+        - -e
+        - PSModulePath=/modules
+        - -w
+        - /app
+        - --env-file
+        - envfile
+        - amidostacks/runner-pwsh-python
+        - pwsh
+        - -NoProfile
+        - -Command
+    quote: "'"
+    before: envfile -e path,home
+
+  docsenv:
+    executable:
+      bin: docker
+      args:
+        - run
+        - --rm
+        - -v ${PWD}:/app
+        - -w /app
+        - -e PSModulePath=/modules
+        - amidostacks/runner-pwsh-asciidoctor
+        - pwsh -NoProfile -Command

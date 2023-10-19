@@ -1,0 +1,38 @@
+import:
+  - ./build/taskctl/contexts.yaml
+  - ./build/taskctl/tasks.yaml
+
+pipelines:
+  lint:
+    - task: lint:yaml
+    - task: lint:terraform:format
+    - task: lint:terraform:validate
+
+  tests:
+    # - task: setup:environment
+    - task: tests:infra:vendor
+    #  depends_on:
+    #    - setup:environment
+    - task: tests:infra:run
+      depends_on:
+        - tests:infra:vendor
+
+  infrastructure:
+    - task: setup:environment
+    - pipeline: lint
+    - task: infra:init
+      depends_on:
+        - setup:environment
+        - lint
+    - task: infra:plan
+      depends_on:
+        - infra:init
+    - task: infra:apply
+      depends_on:
+        - infra:plan
+
+  docs:
+    - task: build:number
+    - task: _docs
+      depends_on:
+        - build:number

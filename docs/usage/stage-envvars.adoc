@@ -1,0 +1,113 @@
+:icons: font
+
+=== Stage Environment Variables
+
+The main bulk of configuration for AIR is achieved using environment variables. This is a great way to keep secrets secret and to provide a dynamic system to change the build parameters without changing the process. However the downside is that it is not easy to discover what those environment variables should be.
+
+The repo contains a file that informs the pipeline system what environment variables are required for each stage and cloud platform combination. The file is located at `<REPO_ROOT>/build/config/stage_envvars.yml`. A snippet of this file is shown below:
+
+[source,yaml]
+----
+include::../../build/config/stage_envvars.yml[lines=1..35]
+...
+----
+
+The `default` variables are those that are to be available for any stage. The credentials are selected based on the cloud that has been specified. The list of variables is generated from the default ones as well as any that have been specified under the selected `stage`.
+
+The credentials section contains a list of the necessary environment variables for the chosen cloud. These variables are required for authentication.
+
+The table below details the variable object that is set as an item in any variables array.
+
+.Variable object parameters
+[options="header",cols="1,3,^1"]
+|===
+| Name | Description | Required
+| `name` | Name of the environment variable | icon:check-circle[]
+| `description` | Description of what the variable is for. This is displayed in any "missing" output as well as 
+generated script files | icon:times-circle[]
+| `cloud` | Specifies that the variable is only required for that cloud platform.
+
+If not specified it is assumed to be for all cloud platforms for that stage. | icon:times-circle[]
+|===
+
+NOTE: Whilst the tool checks that all the environment variables are available to the pipeline, it itself needs to have the `STAGE` and `CLOUD_PLATFORM` specified to accurately determine what environment variables are required.
+
+If the task is run without the `STAGE` and `CLOUD_PLATFORM` variable the output will be very minimal:
+
+[source,bash]
+----
+taskctl setup:environment
+----
+
+.Checking the environment without setting stage
+image::{image_path}/setup-env-minimal.png[]
+
+IMPORTANT: This repository uses InSpec to perform tests against the cloud resources. Although it is available under the Apache licence its license must be accepted in the container. This has *not* been accepted by default and if this is not set InSpec will raise an error when those tasks are executed.
+
+Now if the command is run again after the missing environment variables have been set the output is much more informative. In this case the terraform state templates are being targeted, these are the templates that configure the remote state storage for Ensono Stacks.
+
+.Checking environment for Azure and Terraform state templates
+image::{image_path}/setup-env-azure-terraform-state.png[]
+
+This task is run anywhere that the main pipeline is run so this will be displayed if the necessary environment variables for do not exist. This can be very helpful when debugging SaaS based pipelines.
+
+The next section shows how this information can be used ot create a stub script file for configuring a local environment.
+
+==== Configurable environment variables
+
+The following table details all of the environment variables that can be configured in a script file for deployment. Only those that are required for the operation are added to the script file, however there are others that can be set to control how the resources are deployed.
+
+[cols="4,3,5,1,1a",options="header",striped="even"]
+|===
+| Name | Stage | Description | icon:cloud[] | icon:question-circle[]
+| `CLOUD_PLATFORM` | | The cloud platform being targetted, e.g. Azure or AWS | | icon:check-circle[role=green]
+| `STAGE` | | The resources that are being deployed, e.g. `terraform_state` or `ancillary_resources` | |icon:check-circle[role=green]
+| `TEST_PATH` | | Path to the folder containing the tests | | icon:times-circle[role=red]
+| `ARM_CLIENT_ID` | | Client ID of the Service Principal Name (SPN) being used to authenticate to Azure | icon:windows[role=blue] | icon:check-circle[role=green]
+| `ARM_CLIENT_SECRET` | | Secret associated with the specified SPN | icon:windows[role=blue] | icon:check-circle[role=green]
+| `ARM_SUBSCRIPTION_ID` | | Subscription that the resources will be deployed to | icon:windows[role=blue] | icon:check-circle[role=green]
+| `ARM_TENANT_ID` | | Tenant that the subscription belongs to | icon:windows[role=blue] | icon:check-circle[role=green]
+| `AWS_ACCESS_KEY_ID` | | ID of the IAM user used to perform the deployment | icon:amazon[role=aws] | icon:check-circle[role=green]
+| `AWS_SECRET_ACCESS_KEY` | | Secret associated with the specified IAM user | icon:amazon[role=aws] | icon:check-circle[role=green]
+| `AWS_REGION` | | Region within AWS that is being used for deployment | icon:amazon[role=aws] | icon:check-circle[role=green]
+| `TF_FILE_LOCATION` | | Path to the template files being deployed | | icon:check-circle[role=green]
+| `TF_BACKEND_INIT` | | Values to be passed to Terraform when initializing the backend | | icon:times-circle[role=red]
+| `TF_BACKEND_PLAN` | | Arguments that should be passed to Terraform during the plan process | | icon:times-circle[role=red]
+| `TF_VAR_name` | | Name of the company or project to use when generating names for resources | icon:windows[role=blue] | icon:check-circle[role=green]
+| `TF_VAR_location` | | Location in Azure the resources should be deploy to, e.g. `westeurope` | icon:windows[role=blue] | icon:check-circle[role=green]
+| `TF_VAR_resource_group_name` | | Name of the resource group to use to deploy the resources to | icon:windows[role=blue] | icon:times-circle[role=red]
+| `TF_VAR_generate_rg_name` | teraform_state | Specify if the resource group name should be generated, if not then use the `TF_VAR_resource_group_name` | icon:windows[role=blue] | icon:times-circle[role=red]
+| `TF_VAR_generate_sa_name` | teraform_state | Specify if the storage account name should be generated, if not then use the `TF_VAR_name` | icon:windows[role=blue] | icon:times-circle[role=red]
+| `TF_VAR_acl` | terraform_state | The name of the ACL to apply to the S3 bucket | icon:amazon[role=aws] | icon:times-circle[role=red]
+| `TF_VAR_app_name` | terraform_state | Name of the application used in tagging | icon:amazon[role=aws] | icon:times-circle[role=red]
+| `TF_VAR_attribute_name` | terraform_state | | icon:amazon[role=aws] | icon:times-circle[role=red]
+| `TF_VAR_attribute_type` | terraform_state | | icon:amazon[role=aws] | icon:times-circle[role=red]
+| `TF_VAR_block_public_acls` | terraform_state | Whether Amazon S3 should ignore public ACLs for this bucket | icon:amazon[role=aws] | icon:times-circle[role=red]
+| `TF_VAR_block_public_policy` | terraform_state | Whether Amazon S3 should block public bucket policies for this bucket | icon:amazon[role=aws] | icon:times-circle[role=red]
+| `TF_VAR_env` | terraform_state | Name of the environment | icon:amazon[role=aws] | icon:times-circle[role=red]
+| `TF_VAR_hash_key` | terraform_state |  The attribute to use as the hash (partition) key | icon:amazon[role=aws] | icon:times-circle[role=red]
+| `TF_VAR_ignore_public_acls` | terraform_state |  Whether Amazon S3 should ignore public ACLs for this bucket | icon:amazon[role=aws] | icon:times-circle[role=red]
+| `TF_VAR_read_capacity` | terraform_state |  The number of read units for this table | icon:amazon[role=aws] | icon:times-circle[role=red]
+| `TF_VAR_region` | terraform_state |  Region into which the resources should be deployed | icon:amazon[role=aws] | icon:times-circle[role=red]
+| `TF_VAR_restrict_public_buckets` | terraform_state |  Whether Amazon S3 should restrict public bucket policies for this bucket | icon:amazon[role=aws] | icon:times-circle[role=red]
+| `TF_VAR_sse_enabled` | terraform_state |  State if encryption at rest using an AWS managed Customer Master Key should be enabled | icon:amazon[role=aws] | icon:times-circle[role=red]
+| `TF_VAR_versioning_enabled` | terraform_state | Enable versioning. Once you version-enable a bucket, it can never return to an unversioned state | icon:amazon[role=aws] | icon:times-circle[role=red]
+| `TF_VAR_write_capacity` | terraform_state | The number of write units for this table | icon:amazon[role=aws] | icon:times-circle[role=red]
+| `TESTS_PATH` | terraform_state | Path to the Inspec test files. This should be set in relation to the /app path for the container context. | | icon:times-circle[role=red]
+| `TF_VAR_company_name` | terraform_state | Name of company or project to use in the name | icon:windows[role=blue] | icon:times-circle[role=red]
+| `TF_VAR_dns_zones` | ancillary_resources | List of public and private DNS zones to create | icon:windows[role=blue] | icon:times-circle[role=red]
+| `TF_VAR_deploy_log_analytics` | ancillary_resources | State if Log Analytics should be deployed | icon:windows[role=blue] | icon:times-circle[role=red]
+| `TF_VAR_log_analytics_sku` | ancillary_resources | SKU to be used for Log Analytics if deployed | icon:windows[role=blue] | icon:times-circle[role=red]
+| `TF_VAR_log_analytics_retention` | ancillary_resources | How long data should be kept in Log Analytics | icon:windows[role=blue] | icon:times-circle[role=red]
+| `TF_VAR_key_vault_instances` | ancillary_resources | The names of the `nonprod` and `prod` key vault instances to create | icon:windows[role=blue] | icon:times-circle[role=red]
+| `TF_VAR_key_vault_sku` | ancillary_resources | SKU to be used for the vault instances | icon:windows[role=blue] | icon:times-circle[role=red]
+| `TF_VAR_key_vault_secret_perms` | ancillary_resources | Permissions to set for stored secrets | icon:windows[role=blue] | icon:times-circle[role=red]
+| `TF_VAR_key_vault_key_perms` | ancillary_resources | Permissions to set for stored keys | icon:windows[role=blue] | icon:times-circle[role=red]
+| `TF_VAR_key_vault_cert_perms` | ancillary_resources | Permissions to set for stored certificates | icon:windows[role=blue] | icon:times-circle[role=red]
+| `TF_VAR_key_vault_storage_perms` | ancillary_resources | Permissions to set for storage | icon:windows[role=blue] | icon:times-circle[role=red]
+| `TF_VAR_container_registry` | ancillary_resources | State if a container registry should be created | icon:windows[role=blue] | icon:times-circle[role=red]
+| `TF_VAR_container_registry_admin` | ancillary_resources | State if a admin rights should be enabled | icon:windows[role=blue] | icon:times-circle[role=red]
+| `TF_VAR_container_registry_sku` | ancillary_resources | SKU to be used for the container registry | icon:windows[role=blue] | icon:times-circle[role=red]
+| `TF_VAR_attributes` | ancillary_resources | Additional attributes to be passed to the naming module when generating names | icon:windows[role=blue] | icon:times-circle[role=red]
+| `TV_VAR_tags` | ancillary_resources | Additional tags to be passed to the naming module when generating names | icon:windows[role=blue] | icon:times-circle[role=red]
+|===

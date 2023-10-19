@@ -1,0 +1,28 @@
+name: aws_terraform_state
+title: AWS Terraform State Storage
+maintainer: Amido
+copyright: Amido
+copyright_email: stacks@amido.com
+license: Apache-2.0
+summary: A profile to test that the storage account for storing Terraform state is configured correctly
+version: 0.1.0
+depends:
+  - name: inspec-aws
+    url: https://github.com/inspec/inspec-aws/archive/v1.83.35.tar.gz
+supports:
+  - platform: aws
+
+# Define the inputs for the controls
+inputs:
+  - name: s3_bucket_name
+    description: Name of the s3 bucket to check for existence
+  - name: region
+    description: Region for the resources that are to be tested
+  - name: dynamodb_table_name
+    description: Name of the DynamoDB table to check for
+  - name: dynamodb_table_read_capacity
+    value: 5
+  - name: dynamodb_table_write_capacity
+    value: 5
+  - name: kms_key_id
+    description: ID of the key used for encryption

@@ -1,0 +1,12 @@
+==== Authentication
+
+In order to deploy into Azure, Terraform requires credentials. These need to be configured as details in the <<Cloud Permissions>> section.
+
+The credentials are supplied as environment variables. Please ensure the following values are available.
+
+ * ARM_CLIENT_ID - _ID of the service principal_
+ * ARM_CLIENT_SECRET - _Secret of the service principal_
+ * ARM_SUBSCRIPTION_ID - _Subscription that the resources should be deployed into_
+ * ARM_TENANT_ID - _Tenant that the subscription belongs to_
+
+These values need to be added to the script that is generated in the next step.

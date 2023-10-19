@@ -1,0 +1,52 @@
+:pwsh-repo: https://github.com/amido/independent-runner/blob/main/src/modules/AmidoBuild/exported/
+:pwsh-update-buildnumber: {pwsh-repo}Update-BuildNumber.ps1[Update-BuildNumber]
+:pwsh-invoke-yamllint: {pwsh-repo}Invoke-YamlLint.ps1[Invoke-YamlLint]
+:pwsh-invoke-terraform: {pwsh-repo}Invoke-Terraform.ps1[Invoke-Terraform]
+:pwsh-invoke-inspec: {pwsh-repo}Invoke-Inspec.ps1[Invoke-Inspec]
+:pwsh-new-envconfig: {pwsh-repo}New-EnvConfig.ps1[New-EnvConfig]
+:pwsh-confirm-parameters: {pwsh-repo}Confirm-Parameters.ps1[Confirm-Parameters]
+
+The build process utilises the Ensono Independent Runner (AIR). This means that it is possible to run that tasks and pipelines on a workstation as well as using a CI/CD build runner.
+
+All of the tasks run within a container that contains all the necessary commands and tools to run that task. One of the tools used is the AmidoBuild PowerShell Module which is used by all the tasks. Please look at the https://github.com/amido/independent-runner[Ensono Independent Runner] for more information.
+
+The following table describes the tasks that are available
+
+.AIR Tasks
+[options="header",cols="1,2,1"]
+|====
+| Name | Description | PowerShell Function
+| `build:number` | Correctly sets the build number for the pipeline, depdending on the runner it is being executed on | {pwsh-update-buildnumber}
+| `lint:yaml` | Perform a lint of all the YAML files in the repo | {pwsh-invoke-yamllint}
+| `lint:terraform:format` | Perform Terraform format check | {pwsh-invoke-terraform}
+| `lint:terraform:validate` | Validate the terraform templates | {pwsh-invoke-terraform}
+| `infra:init` | Initialise Terraform for the chosen templates | {pwsh-invoke-terraform}
+| `infra:plan` | Create the plan file for the Terraform templates | {pwsh-invoke-terraform}
+| `infra:apply` | Apply the generated plan to deploy the resources to the cloud platform | {pwsh-invoke-terraform}
+| `setup:dev` | Read the stage environment file and write out a script to be used locally
+to setup the local environment to run the pipeline.
+
+The script will based on the shell in which the task has been called, thus if called from
+PowerShell it will be a PowerShell script, if not then a Bash script is created. 
+
+Please refer to {{Stage Environment Variables}} for more information | {pwsh-new-envconfig}
+| `setup:environment` | When running the pipeline ensure that all the necessary environment variables, required
+for configuration, have been setup. If they have not the tasks will fail with a message stating the missing 
+variables.
+
+Please refer to {{Stage Environment Variables}} for more information | {pwsh-confirm-parameters}
+| `tests:infra:vendor` | Vendor the Inspec tests for the resources. This will install the necessary
+plugins that Inspec needs to use to test the Cloud resources. | {pwsh-invoke-inspec}
+| `tests:infra:run` | Execute the tests against the deployed infrastructure | {pwsh-invoke-inspec}
+|====
+
+The above tasks are subsequently used in pipelines to perform the checks and deployments of the infrastructure.
+
+.AIR Pipelines
+[options="header",cols="1,1,2a"]
+|===
+| Name | Description | Process flow
+| `lint` | Perform all the linting checks on the project | 
+| `tests` | Perform the Inspec infrastructure tests | image::images/pipeline_tests.svg[]
+| `infrastructure` | Deploy the infrastructure into the chosen cloud platform | image::images/pipeline_infrastructure.svg[]
+|===

@@ -1,7 +1,14 @@
 .terraform*
 *tfstate*
 !tfstate.adoc
+tfplan
 local
+vendor
+envfile
+.infracost
+inspec.lock
+output
+outputs
 
 # Since this is deployed through dev machine in future the state will be imported into CI/CD
 !src/aws/example/terraform.prod.tfstate
@@ -16,3 +23,5 @@ local
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+.vscode/settings.json

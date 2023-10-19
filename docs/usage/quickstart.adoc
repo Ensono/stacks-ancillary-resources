@@ -1,0 +1,19 @@
+## Quick Start
+
+This page provides a very quick overview of the stages and commands that are required to get the initial parts of Stacks up and running.
+
+A number of environment variables need to be configured and setup before the setup tasks can be run. The independent runner has a helper task that creates a script into which teh values can be added. This script can then be run to configure the environment before running the tasks.
+
+Each of the supported cloud platforms follow this pattern. The examples for each cloud will just run the necessary command and state that the file should be updated accordingly. For more information please refer to the <<Setup Local Workstation>> section.
+
+### Azure
+
+include::quickstart/azure/azure.adoc[]
+
+<<<<
+
+### AWS
+
+include::quickstart/aws/aws.adoc[]
+
+

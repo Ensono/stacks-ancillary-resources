@@ -1,0 +1,21 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Overview",
+  "steps": [
+    {
+      "directory": "build",
+      "description": "The Build directory contains all of the files that are required for running the Indepedent Runner, as well as bootstrapping any supported CI/CD system, e.g. Azure DevOps or GitHub Actions.\r\n\r\nIt also contains the tasks and contexts under which Taskctl will run",
+      "title": "Build directory"
+    },
+    {
+      "directory": "docs",
+      "description": "The `docs` directory contains all of the documentation about how to use the templates in the repository as well as any examples.\r\n\r\nThe documentation is in AsciiDoc format which allows it to be transpiled to different versions such as PDF, HTML and Markdown",
+      "title": "Docs directory"
+    },
+    {
+      "directory": "src",
+      "description": "The `src` folder contains all of the Terraform templates for the two different parts of the infrastructure. Each part contains templates for both Azure and AWS.",
+      "title": "Src directory"
+    }
+  ]
+}

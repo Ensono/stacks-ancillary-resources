@@ -1,0 +1,26 @@
+variables:
+
+  # Names of deployed ancillary resources
+  - name: resource_group_name
+    value: stacks-ancillary-resources
+
+  - name: location
+    value: westeurope
+
+  - name: container_registry_name
+    value: ensonodigitaleuw
+
+  - name: dns_zones
+    value: '{"public": ["nonprod.stacks.ensono.com", "prod.stacks.ensono.com"], "private": ["nonprod.stacks.ensono.internal", "prod.stacks.ensono.internal"]}'
+
+  - name: la_workspace
+    value: ensonodigital-euw
+
+  - name: la_sku
+    value: PerGB2018
+
+  - name: la_retention
+    value: 30
+
+  - name: key_vault
+    value: '[{"name": "ensonodigital-euw-nonpro", "sku": "standard"}, {"name": "ensonodigital-euw-prod", "sku": "standard"}]'

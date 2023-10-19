@@ -1,0 +1,17 @@
+=== Setup Local Workstation
+
+One of the reasons that AIR was created was to "shift left" so that problems and issues can be detected as early as possible in the Software Development Lifecycle (SDLC). To this end, AIR makes it possible to run the entire pipeline on a local workstation.
+
+Another task, called `setup:local`, exists in AIR which will create a shell script (either PowerShell or Bash compatible) containing all of the variables along with their description.
+
+By default this script will be saved to the `local` directory of the repo, which is ignored by Git. The filename of the script is based on the cloud and the stage. So, if using the previous examples, the script filenames would be:
+
+- PowerShell - `envvar-azure-terraform-state.ps1`
+- Bash - `envvar-azure-terraform-state.sh`
+
+The following screenshot shows the task generating a PowerShell script in VSCode
+
+.PowerShell environment script
+image::images/setup-dev-vscode.png[]
+
+The PowerShell cmdlet, `New-EnvConfig`, which is called by the `setup:dev` task determines the type of script to generate by checking for the `SHELL` environment variable. If this exists then the script is written out as a Bash-compatitble script, if it is not set or does not exist then PowerShell is assumed.
