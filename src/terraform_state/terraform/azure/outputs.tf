@@ -17,7 +17,3 @@ output "storage_account_name" {
   ]
 }
 
-output "input_variables" {
-  description = "JSON object of the input variables"
-  value       = jsonencode(var)
-}
