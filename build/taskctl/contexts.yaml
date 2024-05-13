@@ -1,5 +1,4 @@
 contexts:
-
   powershell:
     executable:
       bin: docker
@@ -12,18 +11,20 @@ contexts:
         - ${PWD}:/app
         - -v
         - /var/run/docker.sock:/var/run/docker.sock
-        - -v
-        - c:/Users/rseymour/workspaces/stacks/independent-runner/src:/modules
         - -e
         - PSModulePath=/modules
         - -w
         - /app
-        - amidostacks/runner-pwsh:0.4.26-unstable
+        - ensonostackseuweirdfmu.azurecr.io/ensono/eir-infrastructure:latest
         - pwsh
         - -NoProfile
         - -Command
     quote: "'"
-    before: envfile -e home,path
+    envfile:
+      generate: true
+      exclude:
+        - home
+        - path
 
   infratests:
     executable:
@@ -41,35 +42,16 @@ contexts:
         - PSModulePath=/modules
         - -w
         - /app
-        - amidostacks/runner-pwsh-inspec
+        - ensonostackseuweirdfmu.azurecr.io/ensono/eir-infrastructure:latest
         - pwsh
         - -NoProfile
         - -Command
     quote: "'"
-    before: envfile -e home,path
-
-  powershell-python:
-    executable:
-      bin: docker
-      args:
-        - run
-        - --rm
-        - -v
-        - ${PWD}:/app
-        - -v
-        - /var/run/docker.sock:/var/run/docker.sock
-        - -e
-        - PSModulePath=/modules
-        - -w
-        - /app
-        - --env-file
-        - envfile
-        - amidostacks/runner-pwsh-python
-        - pwsh
-        - -NoProfile
-        - -Command
-    quote: "'"
-    before: envfile -e path,home
+    envfile:
+      generate: true
+      exclude:
+        - home
+        - path
 
   docsenv:
     executable:
@@ -80,5 +62,5 @@ contexts:
         - -v ${PWD}:/app
         - -w /app
         - -e PSModulePath=/modules
-        - amidostacks/runner-pwsh-asciidoctor
+        - ensonostackseuweirdfmu.azurecr.io/ensono/eir-asciidoctor:latest
         - pwsh -NoProfile -Command
