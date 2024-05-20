@@ -27,7 +27,8 @@ stages:
             env:
               DOCKER_IMAGE_TAG: $(version_number)
               TF_FILE_LOCATION: /app/src/ancillary_resources/terraform/$(CLOUD_PLATFORM)
-              TF_BACKEND: none
+              TF_VAR_company_name: $(company_name)
+              TF_VAR_location: $(location)
 
               STAGE: ancillary_resources
 
