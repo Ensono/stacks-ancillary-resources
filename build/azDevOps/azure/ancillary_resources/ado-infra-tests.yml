@@ -1,4 +1,3 @@
-
 # Include necessary variables for this pipeline file
 variables:
   - group: ensono-sp-creds

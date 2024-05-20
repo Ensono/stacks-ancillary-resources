@@ -28,12 +28,12 @@ resource "azurerm_key_vault" "kv" {
 
   network_acls {
     default_action = "Deny"
-    bypass = "AzureServices"
+    bypass         = "AzureServices"
   }
 
   lifecycle {
-    ignore_changes = [ 
+    ignore_changes = [
       tags,
-     ]
+    ]
   }
 }
