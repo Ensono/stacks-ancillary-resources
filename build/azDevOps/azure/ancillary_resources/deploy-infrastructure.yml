@@ -3,14 +3,13 @@ name: "$(Build.SourceBranchName)-init"
 # Include the variables for this pipeline file
 variables:
   - template: azdo-pipeline-vars.yml
+  - template: ../agent-config-vars.yml
   - group: azure-sp-creds
 
 stages:
-
   - stage: Deployment
 
     jobs:
-
       - job: ancillary_resources
         displayName: Ancillary Resources
         condition: ne(variables.CLOUD_PLATFORM, 'aws')
@@ -21,7 +20,6 @@ stages:
           - template: ../templates/setup.yml
             parameters:
               TaskctlVersion: ${{ variables.TaskctlVersion }}
-              StacksEnvfileVersion: ${{ variables.StacksEnvfileVersion }}
 
           - task: Bash@3
             displayName: "TaskCTL: Infrastructure"
