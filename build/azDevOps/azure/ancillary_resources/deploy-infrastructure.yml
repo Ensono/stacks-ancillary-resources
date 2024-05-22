@@ -29,6 +29,7 @@ stages:
               TF_FILE_LOCATION: /app/src/ancillary_resources/terraform/$(CLOUD_PLATFORM)
               TF_VAR_company_name: $(company_name)
               TF_VAR_location: $(location)
+              TF_VAR_resource_group_name: stacks-ancillary-resources
 
               STAGE: ancillary_resources
 
