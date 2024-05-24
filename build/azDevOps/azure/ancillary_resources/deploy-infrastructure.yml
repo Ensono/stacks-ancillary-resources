@@ -30,7 +30,7 @@ stages:
               TF_VAR_company_name: $(company_name)
               TF_VAR_location: $(location)
               TF_VAR_resource_group_name: stacks-ancillary-resources
-              TF_VAR_dns_zones: '["nonprod.stacks.ensono.com", "prod.stacks.ensono.com"]'
+              TF_VAR_dns_zones: '{"public": ["nonprod.stacks.ensono.com", "prod.stacks.ensono.com"], "private": ["nonprod.stacks.ensono.internal", "prod.stacks.ensono.internal"]}'
 
               STAGE: ancillary_resources
 
