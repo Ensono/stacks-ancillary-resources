@@ -42,7 +42,7 @@ contexts:
         - PSModulePath=/modules
         - -w
         - /app
-        - ensonostackseuweirdfmu.azurecr.io/ensono/eir-infrastructure:latest
+        - ensonostackseuweirdfmu.azurecr.io/ensono/eir-inspec:latest
         - pwsh
         - -NoProfile
         - -Command
