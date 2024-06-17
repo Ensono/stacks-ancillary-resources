@@ -40,3 +40,4 @@ stages:
             parameters:
               CHEF_LICENSE: $(CHEF_LICENSE)
               TESTS_PATH: /app/src/ancillary_resources/tests/$(CLOUD_PLATFORM)
+              INSPEC_ARGS: "--input resource_group_name=stacks-ancillary-resources region=$(location)"
