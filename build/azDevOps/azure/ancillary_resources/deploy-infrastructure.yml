@@ -18,6 +18,7 @@ stages:
 
         steps:
           - template: ../templates/setup.yml
+            taskctl_version: ${{ variables.taskctl_version }}
 
           - task: Bash@3
             displayName: "TaskCTL: Infrastructure"

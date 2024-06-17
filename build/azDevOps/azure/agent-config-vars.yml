@@ -2,3 +2,5 @@ variables:
   # Agent configuration
   - name: pool_vm_image
     value: ubuntu-22.04
+  - name: taskctl_version
+    value: 1.5.1

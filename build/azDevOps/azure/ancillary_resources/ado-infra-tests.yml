@@ -39,8 +39,7 @@ stages:
         steps:
           - template: ../templates/setup.yml
             parameters:
-              TaskctlVersion: ${{ variables.TaskctlVersion }}
-              StacksEnvfileVersion: ${{ variables.StacksEnvfileVersion }}
+              taskctl_version: ${{ variables.taskctl_version }}
 
           - template: ../templates/infra-tests.yml
             parameters:
@@ -67,8 +66,7 @@ stages:
         steps:
           - template: ../templates/setup.yml
             parameters:
-              TaskctlVersion: ${{ variables.TaskctlVersion }}
-              StacksEnvfileVersion: ${{ variables.StacksEnvfileVersion }}
+              taskctl_version: ${{ variables.taskctl_version }}
 
           - template: ../templates/infra-tests.yml
             parameters:

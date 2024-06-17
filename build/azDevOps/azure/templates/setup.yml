@@ -1,5 +1,6 @@
 parameters:
-  TaskctlVersion: 1.5.1
+  - name: taskctl_version
+    type: string
 
 steps:
   # Checkout self repo
@@ -11,5 +12,5 @@ steps:
     inputs:
       targetType: inline
       script: |
-        wget https://github.com/Ensono/taskctl/releases/download/v${{ parameters.TaskctlVersion }}/taskctl_${{ parameters.TaskctlVersion }}_linux_amd64.tar.gz -O /tmp/taskctl.tar.gz
+        wget https://github.com/Ensono/taskctl/releases/download/v${{ parameters.taskctl_version }}/taskctl_${{ parameters.taskctl_version }}_linux_amd64.tar.gz -O /tmp/taskctl.tar.gz
         tar zxf /tmp/taskctl.tar.gz -C /usr/local/bin taskctl
