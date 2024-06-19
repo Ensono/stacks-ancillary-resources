@@ -1,5 +1,5 @@
 parameters:
-  TESTS_PATH:
+  INSPEC_FILES:
   INSPEC_ARGS:
   INSPEC_OUTPUT_PATH: /app/outputs/tests
   CHEF_LICENSE:
