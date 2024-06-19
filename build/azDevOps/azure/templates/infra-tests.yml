@@ -12,7 +12,7 @@ steps:
       targetType: inline
       script: taskctl tests
     env:
-      INSPEC_FILES: ${{ parameters.inspec _files }}
+      INSPEC_FILES: ${{ parameters.inspec_files }}
       CHEF_LICENSE: ${{ parameters.chef_license }}
       INSPEC_ARGS: ${{ parameters.inspec_args }}
       INSPEC_OUTPUT: ${{ parameters.inspec_output_path }}
