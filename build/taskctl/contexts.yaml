@@ -32,6 +32,8 @@ contexts:
       args:
         - run
         - --rm
+        - --env-file
+        - envfile
         - -v
         - ${PWD}:/app
         - -v
