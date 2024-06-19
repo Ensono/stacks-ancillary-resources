@@ -41,3 +41,11 @@ stages:
               CHEF_LICENSE: $(CHEF_LICENSE)
               INSPEC_FILES: /app/src/ancillary_resources/tests/$(CLOUD_PLATFORM)
               INSPEC_ARGS: "--input resource_group_name=stacks-ancillary-resources region=$(location)"
+              REPORT_FILENAME: inspec_azure_ancillary_resources.xml
+
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: JUnit
+              testResultsFiles: outputs/tests/inspec_azure_ancillary_resources.xml
+              testRunTitle: Ancillary Resources Tests
+              failTaskOnFailedTests: true
