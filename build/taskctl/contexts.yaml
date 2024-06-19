@@ -15,7 +15,7 @@ contexts:
         - PSModulePath=/modules
         - -w
         - /app
-        - ensonostackseuweirdfmu.azurecr.io/ensono/eir-infrastructure:1.1.68
+        - ensonostackseuweirdfmu.azurecr.io/ensono/eir-infrastructure:1.1.86
         - pwsh
         - -NoProfile
         - -Command
@@ -31,8 +31,6 @@ contexts:
       bin: docker
       args:
         - run
-        - --env-file
-        - envfile
         - --rm
         - -v
         - ${PWD}:/app
@@ -42,7 +40,7 @@ contexts:
         - PSModulePath=/modules
         - -w
         - /app
-        - ensonostackseuweirdfmu.azurecr.io/ensono/eir-inspec:latest
+        - ensonostackseuweirdfmu.azurecr.io/ensono/eir-inspec:1.1.86
         - pwsh
         - -NoProfile
         - -Command

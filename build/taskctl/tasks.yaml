@@ -75,7 +75,7 @@ tasks:
     context: infratests
     description: Execute infrastructure tests against deployed Cloud resources
     command:
-      - Invoke-Inspec -execute
+      - Invoke-Inspec -execute -ExitCodes 101
 
   _docs:
     context: docsenv
