@@ -42,8 +42,8 @@ output "log_analytics" {
 output "container_registry" {
   description = "Information about the container registry"
   value = var.container_registry ? {
-    id  = azurerm_container_registry.registry[0].name
-    url = azurerm_container_registry.registry[0].login_server
+    id       = azurerm_container_registry.registry[0].name
+    url      = azurerm_container_registry.registry[0].login_server
     location = azurerm_container_registry.registry[0].location
   } : null
   depends_on = [

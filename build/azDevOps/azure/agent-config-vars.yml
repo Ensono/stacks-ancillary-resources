@@ -1,10 +1,8 @@
 variables:
-
   # Agent configuration
   - name: pool_vm_image
     value: ubuntu-22.04
-  - name: TaskctlVersion
-    value: 1.4.2
-  - name: StacksEnvfileVersion
-    value: 0.0.16
-
+  - name: taskctl_version
+    value: 1.5.1
+  - name: CHEF_LICENSE
+    value: accept

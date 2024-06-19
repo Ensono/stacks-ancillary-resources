@@ -1,6 +1,6 @@
 parameters:
-  TaskctlVersion: 1.4.2
-  StacksEnvfileVersion: 0.0.16
+  - name: taskctl_version
+    type: string
 
 steps:
   # Checkout self repo
@@ -12,14 +12,5 @@ steps:
     inputs:
       targetType: inline
       script: |
-        wget https://github.com/taskctl/taskctl/releases/download/${{ parameters.TaskctlVersion }}/taskctl_${{ parameters.TaskctlVersion }}_linux_amd64.tar.gz -O /tmp/taskctl.tar.gz
+        wget https://github.com/Ensono/taskctl/releases/download/v${{ parameters.taskctl_version }}/taskctl_${{ parameters.taskctl_version }}_linux_amd64.tar.gz -O /tmp/taskctl.tar.gz
         tar zxf /tmp/taskctl.tar.gz -C /usr/local/bin taskctl
-
-  # Install Stacks Envfile to generate the envfile to be used by docker
-  - task: Bash@3
-    displayName: "Install: Envfile"
-    inputs:
-      targetType: inline
-      script: |
-        wget https://github.com/amido/stacks-envfile/releases/download/v${{ parameters.StacksEnvfileVersion }}/stacks-envfile-linux-amd64-${{ parameters.StacksEnvfileVersion }} -O /usr/local/bin/envfile
-        chmod +x /usr/local/bin/envfile

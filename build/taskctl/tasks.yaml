@@ -1,5 +1,4 @@
 tasks:
-
   build:number:
     context: powershell
     description: Update the build number
@@ -8,7 +7,7 @@ tasks:
     exportAs: BUILDNUMBER
 
   lint:yaml:
-    context: powershell-python
+    context: powershell
     description: Perform YAML linting
     command:
       - Invoke-YamlLint
@@ -76,11 +75,10 @@ tasks:
     context: infratests
     description: Execute infrastructure tests against deployed Cloud resources
     command:
-      - Invoke-Inspec -execute
+      - Invoke-Inspec -execute -ExitCodes 101
 
   _docs:
     context: docsenv
     description: Generate the documentation
     command:
       - Invoke-AsciiDoc -BasePath /app -config /app/manual.json -pdf
-    

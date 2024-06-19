@@ -18,8 +18,7 @@ stages:
 
           - template: ../templates/setup.yml
             parameters:
-              TaskctlVersion: ${{ variables.TaskctlVersion }}
-              StacksEnvfileVersion: ${{ variables.StacksEnvfileVersion }}
+              taskctl_version: ${{ variables.taskctl_version }}
 
           - task: Bash@3
             displayName: Generate
@@ -49,8 +48,7 @@ stages:
 
           - template: ../templates/setup.yml
             parameters:
-              TaskctlVersion: ${{ variables.TaskctlVersion }}
-              StacksEnvfileVersion: ${{ variables.StacksEnvfileVersion }}
+              taskctl_version: ${{ variables.taskctl_version }}
 
           # Download the necessary artifacts from the previous stage
           # - documentation

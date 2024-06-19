@@ -2,13 +2,14 @@
 # Ths pipeline in this folder is for deploying the resources to Azure in AzDo
 
 variables:
-
   # Terraform State resources
   # ------- General
   - name: location
     value: westeurope
   - name: env
     value: base
+  - name: company_name
+    value: ensono
 
   # ------- Azure
   - name: resource_group_name
@@ -23,3 +24,10 @@ variables:
     value: ""
   - name: app_name
     value: $(application_name)
+
+  - name: CLOUD_PLATFORM
+    value: azure
+  - name: TF_BACKEND_INIT
+    value: key=ancillary,container_name=tfstate,storage_account_name=stacksstatehjfis,resource_group_name=stacks-terraform-state
+  - name: TF_BACKEND_PLAN
+    value: -input=false,-out=tfplan

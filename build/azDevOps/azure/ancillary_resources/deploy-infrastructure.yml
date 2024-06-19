@@ -3,14 +3,13 @@ name: "$(Build.SourceBranchName)-init"
 # Include the variables for this pipeline file
 variables:
   - template: azdo-pipeline-vars.yml
+  - template: ../agent-config-vars.yml
   - group: azure-sp-creds
 
 stages:
-
   - stage: Deployment
 
     jobs:
-
       - job: ancillary_resources
         displayName: Ancillary Resources
         condition: ne(variables.CLOUD_PLATFORM, 'aws')
@@ -20,8 +19,7 @@ stages:
         steps:
           - template: ../templates/setup.yml
             parameters:
-              TaskctlVersion: ${{ variables.TaskctlVersion }}
-              StacksEnvfileVersion: ${{ variables.StacksEnvfileVersion }}
+              taskctl_version: ${{ variables.taskctl_version }}
 
           - task: Bash@3
             displayName: "TaskCTL: Infrastructure"
@@ -31,11 +29,23 @@ stages:
             env:
               DOCKER_IMAGE_TAG: $(version_number)
               TF_FILE_LOCATION: /app/src/ancillary_resources/terraform/$(CLOUD_PLATFORM)
-              TF_BACKEND: none
+              TF_VAR_company_name: $(company_name)
+              TF_VAR_location: $(location)
+              TF_VAR_resource_group_name: stacks-ancillary-resources
+              TF_VAR_dns_zones: '{"public": ["nonprod.stacks.ensono.com", "prod.stacks.ensono.com"], "private": ["nonprod.stacks.ensono.internal", "prod.stacks.ensono.internal"]}'
 
               STAGE: ancillary_resources
 
           - template: ../templates/infra-tests.yml
             parameters:
               CHEF_LICENSE: $(CHEF_LICENSE)
-              TESTS_PATH: /app/src/ancillary_resources/tests/$(CLOUD_PLATFORM)
+              INSPEC_FILES: /app/src/ancillary_resources/tests/$(CLOUD_PLATFORM)
+              INSPEC_ARGS: "--input resource_group_name=stacks-ancillary-resources region=$(location)"
+              REPORT_FILENAME: inspec_azure_ancillary_resources.xml
+
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: JUnit
+              testResultsFiles: outputs/tests/inspec_azure_ancillary_resources.xml
+              testRunTitle: Ancillary Resources Tests
+              failTaskOnFailedTests: true

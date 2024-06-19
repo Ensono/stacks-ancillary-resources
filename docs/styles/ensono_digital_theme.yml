@@ -57,9 +57,9 @@ table:
     font-color: ffffff
 
 role:
-  red: 
+  red:
     font-color: "#800000"
-  green: 
+  green:
     font-color: "#008000"
   blue:
     font-color: "#000080"
