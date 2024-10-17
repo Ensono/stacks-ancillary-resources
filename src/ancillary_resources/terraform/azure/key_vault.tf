@@ -16,8 +16,8 @@ resource "azurerm_key_vault" "kv" {
   tenant_id = data.azurerm_client_config.service_principal.tenant_id
 
   access_policy {
-    tenant_id      = data.azurerm_client_config.service_principal.tenant_id
-    object_id      = data.azurerm_client_config.service_principal.object_id
+    tenant_id = data.azurerm_client_config.service_principal.tenant_id
+    object_id = data.azurerm_client_config.service_principal.object_id
 
     secret_permissions      = var.key_vault_secret_perms
     certificate_permissions = var.key_vault_cert_perms
